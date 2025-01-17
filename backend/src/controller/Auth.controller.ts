@@ -30,7 +30,6 @@ export const validateSignup = [
     .matches(/[!@#$%^&*]/)
     .withMessage("Must have at least one symbol"),
 ];
-
 export const signup = async (
   req: Request<SignupRequestBody>,
   res: Response
@@ -105,7 +104,6 @@ export const login = async (
       return;
     }
     const jwtToken = await CookieAndJwt(user._id, res);
-    console.log(jwtToken);
 
     if (jwtToken === null) {
       throw new Error("Failed to generate the token");

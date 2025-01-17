@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { format } from "date-fns";
 
 interface UploadResponse {
+  profile: any;
   user: any;
-  profileImage: any;
   message: string;
   file: string;
 }
@@ -13,17 +13,14 @@ const fileApi = createApi({
   reducerPath: "fileApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:4000/",
+    credentials: "include",
   }),
   endpoints: (builder) => ({
-    uploadProfileImage: builder.mutation<
-      UploadResponse,
-      { email: string; file: File }
-    >({
-      query: ({ email, file }) => {
+    uploadProfileImage: builder.mutation<UploadResponse, { file: File }>({
+      query: ({ file }) => {
         const formData = new FormData();
-        const newName = `${email}_profile_image_${formattedDate}.jpg`;
+        const newName = `profile_image_${formattedDate}.jpg`;
         formData.append("profileImage", file, newName);
-        formData.append("email", email);
         console.log("The form data from the client: ", formData);
 
         return {

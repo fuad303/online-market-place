@@ -16,9 +16,6 @@ const Profile = () => {
   const [userImage, setUserImage] = useState<string>("");
 
   const handleFileUpload = async (file: File) => {
-    if (!user?.email) {
-      throw new Error("email not found");
-    }
     try {
       const options = {
         maxSizeMB: 0.1,
@@ -27,23 +24,26 @@ const Profile = () => {
       };
       const compressedFile = await imageCompression(file, options);
       const res = await uploadProfileImage({
-        email: user?.email,
         file: compressedFile,
       }).unwrap();
 
       if (user) {
         const updateUser = {
           ...user,
-          profileImage: res.user.profileImage,
+          profileImage: res.profile,
         };
-        dispatch(updateProfileImage(res.profileImage));
+        dispatch(updateProfileImage(res.profile));
         dispatch(setUser(updateUser));
       }
     } catch (error) {
-      console.error(
-        "Error uploading image from const handleFileUpload ",
-        error
-      );
+      if (error instanceof Error) {
+        console.error(
+          "Error uploading image from const handleFileUpload ",
+          error.message
+        );
+      } else {
+        console.log("Unknown error", error);
+      }
     }
   };
 

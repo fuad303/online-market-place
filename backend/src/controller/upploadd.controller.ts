@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
 import multer from "multer";
-import User from "../model/User";
+
 const rootDir = path.resolve();
 const storagePath = path.join(
   rootDir,
@@ -18,52 +18,72 @@ if (!fs.existsSync(storagePath)) {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, storagePath);
+    try {
+      const user = req.detailedUser;
+
+      if (!user) {
+        cb(new Error("Detailed user not found destination func"), "");
+      }
+
+      if (user.profileImage) {
+        const oldImagePath = path.join(rootDir, "src", "db", user.profileImage);
+        if (fs.existsSync(oldImagePath)) {
+          try {
+            fs.unlinkSync(oldImagePath);
+          } catch (error) {
+            if (error instanceof Error) {
+              console.log("Failed to remove");
+            }
+          }
+        }
+      }
+      cb(null, storagePath);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error in filename function:", error.message);
+      }
+      cb(new Error("Internal server error"), "");
+    }
   },
   filename(req, file, cb) {
-    cb(null, file.originalname);
+    try {
+      const user = req.detailedUser;
+
+      if (!user) {
+        cb(new Error("User not found filename func"), "");
+      }
+      const id = user._id.toString();
+      const uniquename = `${id}_${file.originalname}`;
+      cb(null, uniquename);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error in filename function:", error.message);
+      }
+      cb(new Error("Internal server error"), "");
+    }
   },
 });
-
 const uploadProfile = multer({ storage });
-
 export const profileUploadMiddleware = uploadProfile.single("profileImage");
 
 export const profileImage = async (req: Request, res: Response) => {
-  const { email } = req.body;
-
-  if (!email) {
-    res.status(400).json({
-      message: "Email is required",
-    });
-    return;
-  }
   try {
-    const user = await User.findOne({ email });
+    const user = req.detailedUser;
+
     if (!user) {
       res.status(404).json({
         message: "User not found",
       });
-      return;
-    }
-    if (user.profileImage) {
-      const oldImagePath = path.join(rootDir, "src", "db", user.profileImage);
-
-      if (fs.existsSync(oldImagePath)) {
-        try {
-          await fs.promises.unlink(oldImagePath); // Use Promise-based unlink
-          console.log("Old photo removed successfully");
-        } catch (err) {
-          console.error("Failed to remove the old photo:");
-        }
-      }
     }
     const filePath = `uploads/profile-images/${req.file?.filename}`;
+
     user.profileImage = filePath;
     await user.save();
+    const profile = user.profileImage;
 
-    const toSenduser = await User.findOne({ email }).select("profileImage");
-    res.status(200).json({ user: toSenduser });
+    res.status(200).json({
+      profile: profile,
+    });
   } catch (error: any) {
     console.log("Error in saving the image", error.message);
     res.status(500).json({
