@@ -12,7 +12,7 @@ export const userDetails = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user;
+    const userId = req.userId;
     const user = await User.findById(userId);
     if (!user) {
       res.status(404).json({

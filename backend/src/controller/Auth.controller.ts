@@ -69,7 +69,9 @@ export const signup = async (
     if (jwtToken === null) {
       throw new Error("Failed to generate the token");
     }
-    const toSendUser = await User.findById(newUser._id).select("-password");
+    const toSendUser = await User.findById(newUser._id).select(
+      "-password -__v"
+    );
     if (toSendUser) {
       res.status(200).json({ user: toSendUser });
       return;
@@ -108,7 +110,7 @@ export const login = async (
     if (jwtToken === null) {
       throw new Error("Failed to generate the token");
     }
-    const toSendUser = await User.findById(user._id).select("-password -_id");
+    const toSendUser = await User.findById(user._id).select("-password -__v");
     if (toSendUser) {
       res.status(200).json({
         user: toSendUser,

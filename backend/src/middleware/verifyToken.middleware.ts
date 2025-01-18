@@ -3,16 +3,16 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 declare module "express-serve-static-core" {
   interface Request {
-    user?: any;
+    userId?: any;
   }
 }
 
-const authToken = (req: Request, res: Response, next: NextFunction) => {
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.access_token;
 
   if (!token) {
     res.status(400).json({
-      message: "Unauthorized",
+      message: "Unauthorized ",
     });
     return;
   }
@@ -21,9 +21,15 @@ const authToken = (req: Request, res: Response, next: NextFunction) => {
     process.env.ACCESS_TOKEN as string
   ) as JwtPayload;
 
+  if (!decoded) {
+    res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
   try {
     if (typeof decoded === "object" && "userId" in decoded) {
-      req.user = decoded.userId;
+      req.userId = decoded.userId;
     }
     next();
   } catch (error) {
@@ -34,4 +40,4 @@ const authToken = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default authToken;
+export default verifyToken;

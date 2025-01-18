@@ -1,8 +1,6 @@
 import express from "express";
 import { updateProfile } from "../controller/update.controller";
 
-const updateRoute = express.Router();
+export const updateRoute = express.Router();
 
-updateRoute.post("/userProfile", updateProfile);
-
-export default updateRoute;
+updateRoute.post("/userProfile/:id", updateProfile);
