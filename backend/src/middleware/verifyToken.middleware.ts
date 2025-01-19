@@ -12,7 +12,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
   if (!token) {
     res.status(401).json({
-      message: "Unauthorized",
+      message: "به دلایل امنیتی دوباره وارد حساب خود بشید",
     });
     return;
   }
@@ -36,7 +36,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     res.status(500).json({
-      message: "Unauthorized",
+      message: "مشکل تخنیکی",
     });
   }
 };

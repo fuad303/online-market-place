@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/store";
 import { useUpdateMutation } from "../app/api/authApi";
 import LoadingState from "../components/LoadingState";
 import { setUser } from "../app/features/userSlice";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { RootState } from "../app/store";
 
 interface FormField {
   username: string;
@@ -78,10 +78,11 @@ const EditUser = () => {
           />
         </div>
         <button
+          disabled={isLoading}
           type="submit"
           className="w-full bg-[#26394c] text-white py-2 px-4 rounded-md hover:bg-[#2c4257] transition duration-200"
         >
-          ویرایش
+          {isLoading ? "بارگیری" : "ویرایش"}
         </button>
       </form>
     </div>

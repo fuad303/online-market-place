@@ -139,3 +139,16 @@ export const login = async (
     });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json({
+      message: "از حساب خارج شد",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "مشکل سیستم",
+    });
+  }
+};
