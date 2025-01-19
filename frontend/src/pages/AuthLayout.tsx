@@ -1,16 +1,16 @@
-import { ArrowLeft, Key } from "lucide-react";
+import { Key } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
+import BackButton from "../components/BackButtone";
 
 const Auth = () => {
   return (
     <>
-      <NavLink to="/" className="translate-x-4 translate-y-3">
-        <ArrowLeft />
+      <NavLink to="/" className="">
+        <BackButton />
       </NavLink>
-      <div className=" p-4 m-4  rounded-lg max-w-lg mx-auto">
-        {/* Header */}
+
+      <div className="p-4 m-4 rounded-lg max-w-lg mx-auto">
         <div className="flex justify-center gap-4 p-4 items-center">
-          {/* Login Button */}
           <NavLink
             to="/login"
             className={({ isActive }) =>
@@ -23,7 +23,6 @@ const Auth = () => {
             <span>ورود</span>
           </NavLink>
 
-          {/* Signup Button */}
           <NavLink
             to="/signup"
             className={({ isActive }) =>
@@ -37,7 +36,6 @@ const Auth = () => {
           </NavLink>
         </div>
 
-        {/* Main Content */}
         <main className="bg-[#1b2b3c] text-white p-6 rounded-lg shadow-inner">
           <Outlet />
         </main>

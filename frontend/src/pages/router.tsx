@@ -6,8 +6,9 @@ import About from "./About";
 import Signout from "./Signout";
 import Profile from "./Profile";
 import Login from "./Login";
-import Auth from "./Auth";
+import Auth from "./AuthLayout";
 import NewNotification from "./NewNotification";
+import EditUser from "./EditUser";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
       { path: "/about", element: <About /> },
       { path: "/profile", element: <Profile /> },
       { path: "/new-notification", element: <NewNotification /> },
+      { path: "edit-profile", element: <EditUser /> },
     ],
   },
   {

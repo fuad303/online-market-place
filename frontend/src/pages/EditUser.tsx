@@ -1,58 +1,65 @@
 import { useForm } from "react-hook-form";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../app/api/authApi";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import { useUpdateMutation } from "../app/api/authApi";
 import LoadingState from "../components/LoadingState";
-import { useDispatch } from "react-redux";
 import { setUser } from "../app/features/userSlice";
+import { useNavigate } from "react-router-dom";
 
 interface FormField {
   username: string;
   password: string;
 }
 
-const Login = () => {
-  const navigate = useNavigate();
-  const [login, { isLoading, error }] = useLoginMutation();
+const EditUser = () => {
   const { register, handleSubmit, reset } = useForm<FormField>();
+  const user = useSelector((state: RootState) => state.user);
+  const [update, { isLoading, error }] = useUpdateMutation();
   const dispatch = useDispatch();
-
-  const onSubmit = async (data: FormField) => {
+  const navigate = useNavigate();
+  const onSubmit = async (formData: FormField) => {
     try {
-      const res = await login(data).unwrap();
-
-      dispatch(setUser(res));
+      const id = user?._id;
+      if (!id) {
+        console.log("User id is missing");
+        return;
+      }
+      const updateUser = await update({ updatedInfo: formData, id }).unwrap();
+      dispatch(setUser(updateUser));
       reset();
-      navigate("/");
-    } catch (err: any) {
-      console.error("Failed to login");
+      navigate("/profile");
+    } catch (error: any) {
+      console.error("Failed to update");
     }
   };
+
   if (isLoading) {
     return <LoadingState />;
   }
+
   return (
     <div className="sm:pt-0 md:pt-3 flex items-center justify-center ">
       <form
-        className="bg-transparent border-[0.5px] border-gray-200 shadow-lg rounded-lg m-2 p-7 w-[25rem]"
         onSubmit={handleSubmit(onSubmit)}
+        className="bg-transparent border-[0.5px] border-gray-200 shadow-lg rounded-lg m-2 p-7 w-[25rem]"
       >
         {error ? (
           <h1 className="text-2xl font-bold text-red-600 mb-6 text-center">
             {(error as any)?.data?.message || "مشکلی پیش آمد"}
           </h1>
         ) : (
-          <h1 className="text-2xl font-bold  mb-6 text-center">ورود</h1>
+          <h1 className="text-2xl font-bold  mb-6 text-center">ویرایش کاربر</h1>
         )}
 
         <div className="mb-4 text-right">
           <label htmlFor="username" className="block  font-medium">
-            نام کاربری
+            نام کاربری جدید
           </label>
           <input
             {...register("username", {
               required: "Username is required",
             })}
-            defaultValue="fuad"
+            defaultValue={user?.username}
             type="username"
             id="username"
             className="w-full text-right border border-gray-200 bg-transparent  rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -61,35 +68,24 @@ const Login = () => {
 
         <div className="mb-6">
           <label htmlFor="password" className="block text-right  font-medium">
-            رمز عبور
+            رمز عبور جدید
           </label>
           <input
-            {...register("password", {
-              required: "Password is required",
-            })}
-            defaultValue="Fuad4688@@"
+            {...register("password")}
             type="password"
             id="password"
             className="w-full bg-transparent text-right border border-gray-300 rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
           />
         </div>
         <button
-          disabled={isLoading}
           type="submit"
           className="w-full bg-[#26394c] text-white py-2 px-4 rounded-md hover:bg-[#2c4257] transition duration-200"
         >
-          {isLoading ? "بارگیری..." : "ورود"}
+          ویرایش
         </button>
-
-        <p className="translate-y-3 text-right">
-          حساب ندارید؟
-          <NavLink className={`text-blue-400 text-right`} to="/signup">
-            ثبت نام{" "}
-          </NavLink>
-        </p>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default EditUser;

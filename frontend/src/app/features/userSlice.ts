@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
+  phone: number;
   username: string;
   email: string;
   profileImage?: string;
+  _id: string;
 }
 
 const loadUserFromLocalStorage = (): UserState | null => {

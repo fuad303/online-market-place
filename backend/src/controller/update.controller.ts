@@ -4,11 +4,8 @@ import User from "../model/User";
 
 export const updateProfile = async (req: Request, res: Response) => {
   if (req.userId !== req.params.id) {
-    console.log("Id of the authed user", req.userId);
-    console.log("Id of the request", req.params.id);
-
     res.status(401).json({
-      message: "Unauthorized go and fuck yourself",
+      message: "Unauthorized",
     });
     return;
   }
@@ -27,8 +24,8 @@ export const updateProfile = async (req: Request, res: Response) => {
       },
       { new: true }
     );
-    const { password, __v, ...rest } = updatedUser?._doc;
-    res.status(200).json(rest);
+    const { password, __v, ...updateUser } = updatedUser?._doc;
+    res.status(200).json(updateUser);
   } catch (error) {
     if (error instanceof Error) {
       console.log("Error saving the changes", error.message);

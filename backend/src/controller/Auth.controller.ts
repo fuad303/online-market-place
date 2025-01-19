@@ -10,6 +10,7 @@ interface SignupRequestBody {
   username: string;
   email: string;
   password: string;
+  phone: number;
 }
 
 interface LoginRequestBody {
@@ -22,13 +23,18 @@ export const validateSignup = [
   check("email").isEmail().withMessage("use a valid email"),
   check("password")
     .isLength({ min: 6 })
-    .withMessage("password must be at least one character")
+    .withMessage("password must be at least 6 characters")
     .matches(/[A-Z]/)
-    .withMessage("Must contain an uppercase")
+    .withMessage("Must contain an uppercase letter")
     .matches(/[0-9]/)
-    .withMessage("Must contain one number at least")
+    .withMessage("Must contain at least one number")
     .matches(/[!@#$%^&*]/)
     .withMessage("Must have at least one symbol"),
+  check("phone")
+    .matches(/^7[0-9]{8}$/)
+    .withMessage(
+      "Phone number must start with 7 and contain 8 additional digits"
+    ),
 ];
 export const signup = async (
   req: Request<SignupRequestBody>,
@@ -42,27 +48,37 @@ export const signup = async (
     return;
   }
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, phone } = req.body;
     const hashedPassword = await argon2.hash(password);
     const existingUser = await User.findOne({ username });
     if (existingUser) {
+      console.log("User is here", existingUser);
       res.status(400).json({
-        message: "اسم کاریری قابل دسترس نیست",
+        message: "نام کاریری قابل دسترس نیست",
       });
       return;
     }
     const existingEmail = await User.findOne({ email });
+    console.log("Email is here", existingEmail);
+
     if (existingEmail) {
       res.status(400).json({
         message: "ایمیل قابل دسترس نیست",
       });
       return;
     }
-
+    const existingPhone = await User.findOne({ phone });
+    if (existingPhone) {
+      res.status(400).json({
+        message: "شماره تماس قابل دسترس نیست",
+      });
+      return;
+    }
     const newUser: Document & IUser = new User({
       username: username,
       email: email,
       password: hashedPassword,
+      phone: phone,
     });
     await newUser.save();
     const jwtToken = await CookieAndJwt(newUser._id, res);
@@ -73,7 +89,7 @@ export const signup = async (
       "-password -__v"
     );
     if (toSendUser) {
-      res.status(200).json({ user: toSendUser });
+      res.status(200).json(toSendUser);
       return;
     }
   } catch (error) {
@@ -112,9 +128,7 @@ export const login = async (
     }
     const toSendUser = await User.findById(user._id).select("-password -__v");
     if (toSendUser) {
-      res.status(200).json({
-        user: toSendUser,
-      });
+      res.status(200).json(toSendUser);
       return;
     }
   } catch (error) {

@@ -13,20 +13,31 @@ const TopNav = () => {
         {user ? (
           <>
             <NavLink to="/profile">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-gray-500 w-12 h-12"
-              >
-                <circle cx="12" cy="7" r="4"></circle>
-                <path d="M5.5 20c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5H5.5z"></path>
-              </svg>
+              {user.profileImage ? (
+                <img
+                  src={`http://localhost:4000/${user.profileImage}`}
+                  loading="lazy"
+                  className="size-14 h cursor-pointer rounded-full object-cover border-4 border-[#324455] "
+                />
+              ) : (
+                <div className="cursor-pointer size-14 flex items-center justify-center rounded-full bg-gray-200 border-4 border-[#324455]">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-gray-500 w-12 h-12"
+                  >
+                    <circle cx="12" cy="7" r="4"></circle>
+                    <path d="M5.5 20c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5H5.5z"></path>
+                  </svg>
+                </div>
+              )}
             </NavLink>
+            {/*  */}
             <NavLink
               to={`${user ? "new-notification" : "/login"}`}
               className="p-2 whitespace-nowrap bg-[#324455] rounded-md hover:bg-[#3c5165]"

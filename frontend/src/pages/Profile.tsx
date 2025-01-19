@@ -1,10 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import imageCompression from "browser-image-compression";
 import { useUploadProfileImageMutation } from "../app/api/fileApi";
 import { setUser, updateProfileImage } from "../app/features/userSlice";
-import imageCompression from "browser-image-compression";
+
 const Profile = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
@@ -94,12 +95,37 @@ const Profile = () => {
               ref={fileRef}
               className="hidden"
             />
-            <img
-              onClick={() => fileRef.current?.click()}
-              src={userImage}
-              loading="lazy"
-              className="w-20 h-20 cursor-pointer rounded-full object-cover border-4 border-[#324455] mb-5"
-            />
+            {user.profileImage ? (
+              <>
+                <img
+                  onClick={() => fileRef.current?.click()}
+                  src={userImage}
+                  loading="lazy"
+                  className="w-20 h-20 cursor-pointer rounded-full object-cover border-4 border-[#324455] mb-5"
+                />
+              </>
+            ) : (
+              <div
+                onClick={() => {
+                  fileRef.current?.click();
+                }}
+                className="cursor-pointer w-20 h-20 flex items-center justify-center rounded-full bg-gray-200 border-4 border-[#324455]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-gray-500 w-12 h-12"
+                >
+                  <circle cx="12" cy="7" r="4"></circle>
+                  <path d="M5.5 20c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5H5.5z"></path>
+                </svg>
+              </div>
+            )}
             <div className="text-center md:text-right">
               <h2 className="text-xl font-bold ml-3 text-left text-white">
                 {user.username}
@@ -113,7 +139,7 @@ const Profile = () => {
                   onClick={handleCopyClick}
                   className="text-[#FFC107] hover:underline text-sm"
                 >
-                  تلفن: +93790864688
+                  {user.phone}
                 </a>
                 {copyStatus && (
                   <span className="text-green-400 text-sm mr-2">کپی شد!</span>
@@ -125,23 +151,12 @@ const Profile = () => {
                 >
                   ویرایش پروفایل
                 </NavLink>
-                <span className="mx-1 text-gray-400">|</span>
-                <a
-                  href="https://t.me/fuad203"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#FFC107] hover:underline text-sm"
-                >
-                  تلگرام
-                </a>
               </div>
             </div>
           </div>
 
-          {/* User Posts Section */}
           <div className="bg-[#1b344e] p-6 shadow-lg rounded-lg">
             <h2 className="text-xl font-bold mb-4">پست‌های شما</h2>
-            {/* Placeholder for user posts */}
             <div className="bg-[#0e2338] p-4 rounded-lg border border-gray-600 text-center">
               <p className="text-gray-400">
                 هنوز پستی ایجاد نکرده‌اید. شروع کنید!
