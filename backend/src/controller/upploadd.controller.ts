@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
 import multer from "multer";
+import Notification from "../model/Notification.model";
 
 const rootDir = path.resolve();
 const storagePath = path.join(
@@ -86,6 +87,20 @@ export const profileImage = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.log("Error in saving the image", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+export const newNotification = async (req: Request, res: Response) => {
+  try {
+    const notification = await Notification.create(req.body);
+    console.log(notification);
+
+    res.status(201).json(notification);
+  } catch (error) {
+    console.log("Error making notification");
     res.status(500).json({
       message: "Internal server error",
     });

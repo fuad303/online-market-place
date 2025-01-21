@@ -1,13 +1,20 @@
 import { Key } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import BackButton from "../components/BackButtone";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
 
 const Auth = () => {
+  const user = useSelector((state: RootState) => state.user);
   return (
     <>
-      <NavLink to="/" className="">
-        <BackButton />
-      </NavLink>
+      {user ? (
+        <NavLink to="/" className="">
+          <BackButton />
+        </NavLink>
+      ) : (
+        <></>
+      )}
 
       <div className="p-4 m-4 rounded-lg max-w-lg mx-auto">
         <div className="flex justify-center gap-4 p-4 items-center">

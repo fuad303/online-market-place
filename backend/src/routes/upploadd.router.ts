@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import {
+  newNotification,
   profileImage,
   profileUploadMiddleware,
 } from "../controller/upploadd.controller";
@@ -14,4 +15,5 @@ upload.post(
   profileImage
 );
 
+upload.post("/makeNoti", newNotification);
 export default upload;

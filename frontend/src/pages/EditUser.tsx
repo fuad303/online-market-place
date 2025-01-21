@@ -5,6 +5,7 @@ import { setUser } from "../app/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { RootState } from "../app/store";
+import { useEffect } from "react";
 
 interface FormField {
   username: string;
@@ -21,7 +22,7 @@ const EditUser = () => {
     try {
       const id = user?._id;
       if (!id) {
-        console.log("User id is missing");
+        console.log("وارد اکانت خود بشید");
         return;
       }
       const updateUser = await update({ updatedInfo: formData, id }).unwrap();
@@ -32,6 +33,12 @@ const EditUser = () => {
       console.error("Failed to update");
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user]);
 
   if (isLoading) {
     return <LoadingState />;

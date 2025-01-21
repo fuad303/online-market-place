@@ -1,5 +1,5 @@
 import { RootState } from "../app/store";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression";
@@ -28,39 +28,44 @@ const Profile = () => {
 
   const [Logout] = useLogoutMutation();
 
-  const handleFileUpload = async (file: File) => {
-    try {
-      const options = {
-        maxSizeMB: 0.1, // Limit file size to 0.1 MB
-        maxWidthOrHeight: 720, // Restrict image dimensions
-        useWebWorker: true,
-      };
+  const handleFileUpload = useCallback(
+    async (file: File) => {
+      try {
+        const options = {
+          maxSizeMB: 0.1, // Limit file size to 0.1 MB
+          maxWidthOrHeight: 720, // Restrict image dimensions
+          useWebWorker: true,
+        };
 
-      const compressedFile = await imageCompression(file, options);
+        const compressedFile = await imageCompression(file, options);
 
-      const res = await uploadProfileImage({ file: compressedFile }).unwrap();
+        const res = await uploadProfileImage({ file: compressedFile }).unwrap();
 
-      if (user) {
-        const updatedUser = { ...user, profileImage: res.profile };
-        dispatch(updateProfileImage(res.profile));
-        dispatch(setUser(updatedUser));
+        if (user) {
+          dispatch(updateProfileImage(res.profile));
+          setUserImage(`http://localhost:4000/${res.profile}`);
+        }
+      } catch (error) {
+        console.error(
+          "Error uploading image in handleFileUpload:",
+          error instanceof Error ? error.message : error
+        );
       }
-    } catch (error) {
-      console.error(
-        "Error uploading image in handleFileUpload:",
-        error instanceof Error ? error.message : error
-      );
-    }
-  };
+    },
+    [dispatch, uploadProfileImage, user]
+  );
 
   const handleLogout = async () => {
-    try {
-      const res = await Logout().unwrap();
-      dispatch(clearUser());
-      navigate("/login");
-      console.log(res);
-    } catch (error) {
-      console.log("Error while log out", error);
+    const confirmation = window.confirm("برای خروج از حساب خود تایید کنید");
+    if (confirmation) {
+      try {
+        const res = await Logout().unwrap();
+        dispatch(clearUser());
+        navigate("/login");
+        console.log(res);
+      } catch (error) {
+        console.log("Error while log out", error);
+      }
     }
   };
 

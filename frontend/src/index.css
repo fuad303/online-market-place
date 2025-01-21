@@ -18,3 +18,9 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #5b778d;
 }
+
+.truncate-none {
+  overflow: visible;
+  text-overflow: inherit;
+  white-space: normal;
+}
