@@ -45,7 +45,7 @@ const TopNav = () => {
               ثبت اگهی
             </NavLink>
             <NavLink
-              to={`${user ? "new-notification" : "/login"}`}
+              to=""
               className="p-2 whitespace-nowrap bg-[#324455] rounded-md hover:bg-[#3c5165]"
             >
               ثبت راننده

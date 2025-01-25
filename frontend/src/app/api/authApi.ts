@@ -36,7 +36,7 @@ const authApi = createApi({
     update: builder.mutation<User, UpdateArgs>({
       query: ({ updatedInfo, id }) => ({
         url: `update/userProfile/${id}`,
-        method: "POST",
+        method: "PUT",
         body: updatedInfo,
       }),
     }),

@@ -26,13 +26,9 @@ interface NotificationField {
 const NotificationForm = () => {
   const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
-  //
   const [fileCount, setFileCount] = useState<number>(0);
-  //
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  //
   const [isCompressing, setIsCompressing] = useState<boolean>(false);
-  //
   const [otherCategories, setOtherCategories] = useState<string>("");
   const [createNotification, { isLoading, error }] =
     useCreateNotificationMutation();
@@ -90,9 +86,11 @@ const NotificationForm = () => {
   const onSubmit = async (data: NotificationField) => {
     try {
       const formData = new FormData();
+      console.log("You check the photos here", formData);
+
       formData.append("title", data.title);
       formData.append("description", data.description || "");
-      if (data.category === "others") {
+      if (data.category === "دیگر") {
         data.category = otherCategories;
         data.subCategory = undefined;
       }
@@ -104,12 +102,12 @@ const NotificationForm = () => {
 
       formData.append("price", data.price);
       formData.append("location", data.location);
-      for (const file of selectedFiles) {
-        formData.append("images", file, "notification-image.jpg");
-      }
+      selectedFiles.forEach((file, index) => {
+        const fileName = `notification_image${index + 1}.jpg`;
+        formData.append("images", file, fileName);
+      });
 
-      const res = await createNotification(formData).unwrap();
-
+      await createNotification(formData).unwrap();
       reset();
       navigate("/");
     } catch (error) {
@@ -124,6 +122,7 @@ const NotificationForm = () => {
   }, []);
 
   if (isLoading) return <LoadingState />;
+
   return (
     <>
       {user ? (
@@ -148,13 +147,13 @@ const NotificationForm = () => {
               <label className="block font-medium text-lg mb-1">نوع کالا</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 grid-auto-rows[minmax(150px, auto)]">
                 {[
-                  { value: "phone", label: "موبایل", icon: phone },
-                  { value: "laptop", label: "لپ تاپ", icon: laptop },
-                  { value: "car", label: "موتر", icon: car },
-                  { value: "motorcycle", label: "موترسایکل", icon: motor },
-                  { value: "house", label: "خانه", icon: house },
-                  { value: "shop", label: "دکان", icon: shop },
-                  { value: "others", label: "دیگر", icon: null },
+                  { value: "موبایل", label: "موبایل", icon: phone },
+                  { value: "لپتاپ", label: "لپ تاپ", icon: laptop },
+                  { value: "موتر", label: "موتر", icon: car },
+                  { value: "موترسایکل", label: "موترسایکل", icon: motor },
+                  { value: "خانه", label: "خانه", icon: house },
+                  { value: "دکان", label: "دکان", icon: shop },
+                  { value: "دیگر", label: "دیگر", icon: null },
                 ].map(({ value, label, icon }) => (
                   <label
                     key={value}
@@ -174,7 +173,7 @@ const NotificationForm = () => {
                       <img
                         className="sm:size-10 md:size-8 lg:size-10"
                         src={icon}
-                        alt={`${label} icon`}
+                        alt={`آیکون ${label}`}
                       />
                     )}
                     <h1 className="text-lg font-semibold">{label}</h1>
@@ -189,13 +188,13 @@ const NotificationForm = () => {
             </div>
 
             {/* Sub-category for House and Shop */}
-            {(category === "house" || category === "shop") && (
+            {(category === "خانه" || category === "دکان") && (
               <div className="mb-4 text-right">
                 <label className="block font-medium">
-                  نوع {category === "house" ? "خانه" : "دکان"}
+                  نوع {category === "خانه" ? "خانه" : "دکان"}
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {["rent", "sell", "mortgage"].map((subItem) => (
+                  {["کرایه", "فروش", "گروی"].map((subItem) => (
                     <label
                       key={subItem}
                       className={`flex items-center p-3 space-x-4 cursor-pointer rounded-md border border-gray-300 transition-all duration-300 ease-in-out ${
@@ -210,19 +209,13 @@ const NotificationForm = () => {
                         {...register("subCategory", { required: true })}
                         className="hidden peer"
                       />
-                      <span>
-                        {subItem === "rent"
-                          ? "کرایه"
-                          : subItem === "sell"
-                          ? "فروش"
-                          : "گروی"}
-                      </span>
+                      <span>{subItem}</span>
                     </label>
                   ))}
                 </div>
                 {errors.subCategory && (
                   <span className="text-red-500 text-sm">
-                    لطفاً نوع {category === "house" ? "خانه" : "دکان"} را انتخاب
+                    لطفاً نوع {category === "خانه" ? "خانه" : "دکان"} را انتخاب
                     کنید
                   </span>
                 )}
@@ -230,7 +223,7 @@ const NotificationForm = () => {
             )}
 
             {/* Input for "Others" category */}
-            {category === "others" && (
+            {category === "دیگر" && (
               <div className="mb-4 text-right">
                 <label
                   htmlFor="otherCategory"
@@ -356,16 +349,22 @@ const NotificationForm = () => {
                   <></>
                 )}
               </p>
+
+              {isCompressing && (
+                <h1 className="text-red-500 font-bold text-xl">
+                  در حال فشرده‌سازی عکس ها ...
+                </h1>
+              )}
               {/* Render selected image previews */}
               {selectedFiles.length > 0 && (
-                <div className="mt-4 grid md:grid-cols-2  gap-4">
+                <div className="mt-4 grid md:grid-cols-2 gap-4">
                   {selectedFiles.map((file, index) => (
                     <div key={index} className="relative">
                       <img
                         loading="lazy"
                         src={URL.createObjectURL(file)}
-                        alt={`Selected ${index + 1}`}
-                        className="w-full h-36 object-cover rounded-md border"
+                        alt={`تصویر انتخاب شده ${index + 1}`}
+                        className="w-full h-36 object-contain rounded-md border"
                       />
                       <span className="absolute top-1 right-1 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                         {index + 1}

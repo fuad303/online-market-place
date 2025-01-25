@@ -110,6 +110,8 @@ if (!fs.existsSync(notificationStoragePath)) {
 
 const notificationStorage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log("Here are the files: ", file);
+
     if (!file) {
       cb(new Error("No image found"), "");
     }
@@ -130,11 +132,6 @@ const notificationStorage = multer.diskStorage({
       );
     }
     try {
-      console.log(
-        "Here is the original file name coming with the request",
-        file.originalname
-      );
-
       const timeStamp = Date.now();
       const uniquename = `${userId}_${timeStamp}_${file.originalname}`;
       cb(null, uniquename);
@@ -167,9 +164,7 @@ export const newNotification = async (req: Request, res: Response) => {
       specificcategoryName,
       price,
       location,
-      images,
     } = req.body;
-    console.log(images);
 
     if (!title || !category || !price || !location) {
       res.status(400).json({

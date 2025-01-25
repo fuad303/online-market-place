@@ -1,25 +1,44 @@
-import { useEffect } from "react";
-import { useGetUserPostsQuery } from "../app/api/notificationsApi";
+import {
+  useDeleteAPostMutation,
+  useGetUserPostsQuery,
+} from "../app/api/notificationsApi";
 import LoadingState from "./LoadingState";
 import { MapPin, Tag, Folder, Layers } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const UserPosts = () => {
-  const { data, isLoading, error } = useGetUserPostsQuery(undefined, {
+  const { data, isLoading, error, refetch } = useGetUserPostsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
 
-  useEffect(() => {
-    console.log("Data: ", data);
-    console.log("error: ", error);
-  }, [data, error]);
+  const [deleteAPost, { isLoading: deleteLoading, error: deleteError }] =
+    useDeleteAPostMutation();
 
-  if (isLoading) return <LoadingState />;
+  const handlePostDelete = async (id: string) => {
+    try {
+      const res = await deleteAPost(id).unwrap();
+      alert(res.message);
+      refetch();
+    } catch (error) {
+      alert(error);
+    }
+  };
 
-  if (error)
+  if (isLoading || deleteLoading) return <LoadingState />;
+
+  if (error || deleteError)
     return (
-      <h1 className="text-2xl font-bold text-red-600 mb-6 text-center">
-        {(error as any)?.data?.message || "مشکلی پیش آمد"}
-      </h1>
+      <div className="text-center py-8">
+        <h1 className="text-2xl font-bold text-red-600 mb-6">
+          {(error as any)?.data?.message || "مشکلی پیش آمد"}
+        </h1>
+        <NavLink
+          to="/new-notification"
+          className="inline-block bg-[#324455] text-white px-6 py-3 rounded-md shadow-md hover:bg-[#3f5365] transition-colors duration-300"
+        >
+          ثبت اعلان جدید
+        </NavLink>
+      </div>
     );
 
   return (
@@ -29,7 +48,7 @@ const UserPosts = () => {
       </h1>
 
       <div
-        className="grid gap-6"
+        className={`grid gap-6 ${data?.length === 1 ? "items-center" : ""}`}
         style={{
           gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
         }}
@@ -37,7 +56,9 @@ const UserPosts = () => {
         {data?.map((post) => (
           <div
             key={post._id}
-            className="bg-[#1b344e] p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+            className={`bg-[#1b344e] p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between ${
+              data?.length === 1 ? "max-w-sm" : ""
+            }`}
           >
             {/* Post Title and Description */}
             <div>
@@ -85,7 +106,7 @@ const UserPosts = () => {
                   <img
                     key={index}
                     loading="lazy"
-                    className="w-full h-24 rounded-md object-cover border border-gray-600"
+                    className="w-full h-24 rounded-md object-contain border border-gray-600"
                     src={`http://localhost:4000/${image}`}
                     alt={`Post image ${index}`}
                   />
@@ -94,8 +115,13 @@ const UserPosts = () => {
             )}
 
             {/* Buttons Section */}
-            <div className="flex justify-end mt-4 gap-2">
-              <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+            <div className="flex justify-start mt-4 gap-2">
+              <button
+                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
+                onClick={() => {
+                  handlePostDelete(post._id);
+                }}
+              >
                 حذف
               </button>
               <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">

@@ -13,6 +13,10 @@ export interface NotificationsInterface {
   createdAt?: Date;
 }
 
+interface Deleteresponse {
+  message: string;
+}
+
 const notificationsApi = createApi({
   reducerPath: "notificationsApi",
   baseQuery: fetchBaseQuery({
@@ -26,8 +30,16 @@ const notificationsApi = createApi({
         method: "GET",
       }),
     }),
+
+    deleteAPost: builder.mutation<Deleteresponse, string>({
+      query: (id) => ({
+        url: `notifications/deleteANotification${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetUserPostsQuery } = notificationsApi;
+export const { useGetUserPostsQuery, useDeleteAPostMutation } =
+  notificationsApi;
 export default notificationsApi;
