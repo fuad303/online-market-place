@@ -5,7 +5,10 @@ import multer from "multer";
 import Notification from "../model/Notification.model";
 
 const rootDir = path.resolve();
-const storagePath = path.join(
+
+//profile Image
+
+const storagePathProfileImage = path.join(
   rootDir,
   "src",
   "db",
@@ -13,11 +16,11 @@ const storagePath = path.join(
   "uploads",
   "profile-images"
 );
-if (!fs.existsSync(storagePath)) {
-  fs.mkdirSync(storagePath, { recursive: true });
+if (!fs.existsSync(storagePathProfileImage)) {
+  fs.mkdirSync(storagePathProfileImage, { recursive: true });
 }
 
-const storage = multer.diskStorage({
+const profileImageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     try {
       const user = req.detailedUser;
@@ -38,7 +41,7 @@ const storage = multer.diskStorage({
           }
         }
       }
-      cb(null, storagePath);
+      cb(null, storagePathProfileImage);
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error in filename function:", error.message);
@@ -48,12 +51,7 @@ const storage = multer.diskStorage({
   },
   filename(req, file, cb) {
     try {
-      const user = req.detailedUser;
-
-      if (!user) {
-        cb(new Error("User not found     filename func"), "");
-      }
-      const id = user._id.toString();
+      const id = req.userId.toString();
       const uniquename = `${id}_${file.originalname}`;
       cb(null, uniquename);
     } catch (error) {
@@ -64,10 +62,12 @@ const storage = multer.diskStorage({
     }
   },
 });
-const uploadProfile = multer({ storage });
+const uploadProfile = multer({ storage: profileImageStorage });
 export const profileUploadMiddleware = uploadProfile.single("profileImage");
 
 export const profileImage = async (req: Request, res: Response) => {
+  console.log("The user from imageupload", req.detailedUser);
+
   try {
     const user = req.detailedUser;
 
@@ -93,16 +93,116 @@ export const profileImage = async (req: Request, res: Response) => {
   }
 };
 
-export const newNotification = async (req: Request, res: Response) => {
-  try {
-    const notification = await Notification.create(req.body);
-    console.log(notification);
+//New Notification handler
 
-    res.status(201).json(notification);
+const notificationStoragePath = path.join(
+  rootDir,
+  "src",
+  "db",
+  "storage",
+  "uploads",
+  "notifications"
+);
+
+if (!fs.existsSync(notificationStoragePath)) {
+  fs.mkdirSync(notificationStoragePath, { recursive: true });
+}
+
+const notificationStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    if (!file) {
+      cb(new Error("No image found"), "");
+    }
+    try {
+      cb(null, notificationStoragePath);
+    } catch (error) {
+      console.log("Failed in notification storage path destination", error);
+    }
+  },
+  filename: (req, file, cb) => {
+    const userId = req.userId.toString();
+    if (!userId) {
+      cb(
+        new Error(
+          "Detailed user not found in filename of the notification func"
+        ),
+        ""
+      );
+    }
+    try {
+      console.log(
+        "Here is the original file name coming with the request",
+        file.originalname
+      );
+
+      const timeStamp = Date.now();
+      const uniquename = `${userId}_${timeStamp}_${file.originalname}`;
+      cb(null, uniquename);
+    } catch (error) {
+      console.log("Failed in notification storage path filename", error);
+    }
+  },
+});
+
+const notificationUpload = multer({ storage: notificationStorage });
+export const notificationUploadMiddleware = notificationUpload.array(
+  "images",
+  4
+);
+
+export const newNotification = async (req: Request, res: Response) => {
+  const userId = req.userId;
+  if (!userId) {
+    res.status(401).json({
+      message: "دوباره وارد اکانت خود بشید",
+    });
+    return;
+  }
+  try {
+    const {
+      title,
+      description,
+      category,
+      subCategory,
+      specificcategoryName,
+      price,
+      location,
+      images,
+    } = req.body;
+    console.log(images);
+
+    if (!title || !category || !price || !location) {
+      res.status(400).json({
+        message: "فرم ناتکمیل هست",
+      });
+      return;
+    }
+    const files = req.files as Express.Multer.File[];
+    const imagesPaths =
+      files?.map((file) => `uploads/notifications/${file.filename}`) || [];
+
+    const newNotification = await new Notification({
+      title: title,
+      description: description,
+      category: category,
+      subCategory: subCategory,
+      specificcategoryName: specificcategoryName,
+      price: price,
+      location: location,
+      images: imagesPaths,
+      seller: req.userId,
+    });
+
+    await newNotification.save();
+
+    res.status(201).json(newNotification);
   } catch (error) {
-    console.log("Error making notification");
+    console.log(
+      "Error making notification, best regards:const newNotification",
+      error
+    );
     res.status(500).json({
-      message: "Internal server error",
+      message: "مشکلی پیش امد",
     });
   }
 };

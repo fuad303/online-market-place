@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 const LoadingState: React.FC = () => {
   return (
     <motion.div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70"
       initial={{ opacity: 0 }}
       animate={{ opacity: 0.8 }}
       exit={{ opacity: 0 }}
     >
       {/* Outer Gradient Spinner */}
       <motion.div
-        className="w-24 h-24 rounded-full shadow-lg"
+        className="w-32 h-32 rounded-full shadow-lg"
         style={{
           background: "linear-gradient(135deg, #142c3a, #1f3c4e, #1e2a35)", // Darker colors
         }}
@@ -30,7 +30,7 @@ const LoadingState: React.FC = () => {
 
       {/* Inner Gradient Spinner */}
       <motion.div
-        className="absolute w-16 h-16 rounded-full shadow-lg"
+        className="absolute w-24 h-24 rounded-full shadow-lg"
         style={{
           background: "linear-gradient(135deg, #1f3c4e, #172c40, #141b20)", // Darker colors
         }}

@@ -3,11 +3,13 @@ import authApi from "./api/authApi";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./features/userSlice";
-import fileApi from "./api/fileApi";
+import fileApi from "./api/uploadApi";
+import notificationsApi from "./api/notificationsApi";
 const rootReducer = combineReducers({
   authApi: authApi.reducer,
   user: userReducer,
   fileApi: fileApi.reducer,
+  notificationsApi: notificationsApi.reducer,
 });
 
 const persistConfig = {
@@ -24,7 +26,11 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
       },
-    }).concat(fileApi.middleware, authApi.middleware),
+    }).concat(
+      fileApi.middleware,
+      authApi.middleware,
+      notificationsApi.middleware
+    ),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

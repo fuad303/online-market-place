@@ -1,21 +1,17 @@
 import { RootState } from "../app/store";
-import { useCallback, useEffect, useRef, useState } from "react";
+import LoadingState from "../components/LoadingState";
+import { useLogoutMutation } from "../app/api/authApi";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression";
-import { useUploadProfileImageMutation } from "../app/api/fileApi";
-import {
-  clearUser,
-  setUser,
-  updateProfileImage,
-} from "../app/features/userSlice";
-import LoadingState from "../components/LoadingState";
-import { useLogoutMutation } from "../app/api/authApi";
-
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useUploadProfileImageMutation } from "../app/api/uploadApi";
+import { clearUser, updateProfileImage } from "../app/features/userSlice";
+import UserPosts from "../components/UserPosts";
+import notificationsApi from "../app/api/notificationsApi";
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const user = useSelector((state: RootState) => state.user);
 
   const [copyStatus, setCopyStatus] = useState(false);
@@ -59,13 +55,11 @@ const Profile = () => {
     const confirmation = window.confirm("برای خروج از حساب خود تایید کنید");
     if (confirmation) {
       try {
-        const res = await Logout().unwrap();
+        await Logout().unwrap();
         dispatch(clearUser());
+        dispatch(notificationsApi.util.resetApiState());
         navigate("/login");
-        console.log(res);
-      } catch (error) {
-        console.log("Error while log out", error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -112,7 +106,7 @@ const Profile = () => {
       ) : (
         <div className="p-4 flex items-center justify-center">
           {user ? (
-            <div className="w-full max-w-4xl grid gap-6">
+            <div className="w-full max-w-full grid gap-6">
               {/* Profile Card */}
               <div className="bg-[#1b344e] p-6 shadow-lg rounded-lg flex flex-col md:flex-row items-center md:items-start">
                 {/* Profile Image */}
@@ -195,13 +189,8 @@ const Profile = () => {
               </div>
 
               {/* User Posts Section */}
-              <div className="bg-[#1b344e] p-6 shadow-lg rounded-lg">
-                <h2 className="text-xl font-bold mb-4">پست‌های شما</h2>
-                <div className="bg-[#0e2338] p-4 rounded-lg border border-gray-600 text-center">
-                  <p className="text-gray-400">
-                    هنوز پستی ایجاد نکرده‌اید. شروع کنید!
-                  </p>
-                </div>
+              <div className="w-full">
+                <UserPosts />
               </div>
             </div>
           ) : (

@@ -1,14 +1,17 @@
+import { RootState } from "../app/store";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import car from "../components/svgs/car.svg";
 import shop from "../components/svgs/shop.svg";
-import house from "../components/svgs/house.svg";
-import phone from "../components/svgs/phone.svg";
-import laptop from "../components/svgs/laptop.svg";
-import motor from "../components/svgs/motor.svg";
-import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import phone from "../components/svgs/phone.svg";
+import house from "../components/svgs/house.svg";
+import motor from "../components/svgs/motor.svg";
+import laptop from "../components/svgs/laptop.svg";
+import LoadingState from "../components/LoadingState";
+import imageCompression from "browser-image-compression";
+import { useCreateNotificationMutation } from "../app/api/uploadApi";
 
 interface NotificationField {
   title: string;
@@ -18,50 +21,109 @@ interface NotificationField {
   price: string;
   location: string;
   images: FileList;
-  otherCategory?: string;
 }
 
 const NotificationForm = () => {
   const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
+  //
   const [fileCount, setFileCount] = useState<number>(0);
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, []);
+  //
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  //
+  const [isCompressing, setIsCompressing] = useState<boolean>(false);
+  //
+  const [otherCategories, setOtherCategories] = useState<string>("");
+  const [createNotification, { isLoading, error }] =
+    useCreateNotificationMutation();
+
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<NotificationField>();
+
   const category = watch("category");
-  const otherCategory = watch("otherCategory");
 
-  const onSubmit = (data: NotificationField) => {
-    // If the user selected "Others", use the "otherCategory" value as the
-    if (category === "others" && otherCategory) {
-      data.category = otherCategory;
-    }
-    console.log(data);
-
-    // Handle form submission logic here
-  };
-
-  function handelFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handelFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
     if (files) {
       if (files.length > 4) {
         alert("حداکثر چهار عکس");
         e.target.value = "";
         setFileCount(0);
-      } else {
-        setFileCount(files.length);
+        setSelectedFiles([]);
+        return;
+      }
+
+      try {
+        setIsCompressing(true);
+        const compressedFiles: File[] = [];
+
+        for (const file of Array.from(files)) {
+          try {
+            const options = {
+              maxSizeMB: 0.5,
+              maxWidthOrHeight: 720,
+              useWebWorker: true,
+            };
+            const compressedFile = await imageCompression(file, options);
+            compressedFiles.push(compressedFile);
+          } catch (error) {
+            console.error("Failed to compress", error);
+            compressedFiles.push(file);
+          }
+        }
+
+        setFileCount(compressedFiles.length);
+        setSelectedFiles(compressedFiles);
+      } catch (error) {
+        console.error("An error occurred while compressing files", error);
+      } finally {
+        setIsCompressing(false);
       }
     }
   }
 
+  const onSubmit = async (data: NotificationField) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description || "");
+      if (data.category === "others") {
+        data.category = otherCategories;
+        data.subCategory = undefined;
+      }
+      formData.append("category", data.category);
+
+      if (data.subCategory) {
+        formData.append("subCategory", data.subCategory);
+      }
+
+      formData.append("price", data.price);
+      formData.append("location", data.location);
+      for (const file of selectedFiles) {
+        formData.append("images", file, "notification-image.jpg");
+      }
+
+      const res = await createNotification(formData).unwrap();
+
+      reset();
+      navigate("/");
+    } catch (error) {
+      console.error("failed to submit notification", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, []);
+
+  if (isLoading) return <LoadingState />;
   return (
     <>
       {user ? (
@@ -73,7 +135,13 @@ const NotificationForm = () => {
             className="bg-transparent border-[0.5px] flex-2 border-gray-200 shadow-lg rounded-lg m-2 p-7 w-full sm:w-[25rem] lg:w-[40rem] xl:w-[45rem]"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <h1 className="text-2xl font-bold mb-6 text-right">ثبت اعلان</h1>
+            {error ? (
+              <h1 className="text-2xl font-bold text-red-600 mb-6 text-center">
+                {(error as any)?.data?.message || "مشکلی پیش آمد"}
+              </h1>
+            ) : (
+              <h1 className="text-2xl font-bold mb-6 text-right">ثبت اعلان</h1>
+            )}
 
             {/* Category Selection */}
             <div className="mb-4 text-right">
@@ -171,17 +239,18 @@ const NotificationForm = () => {
                   نوع دیگر
                 </label>
                 <input
-                  {...register("otherCategory", {
-                    required: "لطفاً نوع دیگر را وارد کنید",
-                  })}
                   type="text"
                   id="otherCategory"
                   placeholder="نوع کالا را وارد کنید"
+                  value={otherCategories}
+                  onChange={(e) => {
+                    setOtherCategories(e.target.value);
+                  }}
                   className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
                 />
-                {errors.otherCategory && (
+                {errors.category && (
                   <span className="text-red-500 text-sm">
-                    {errors.otherCategory.message}
+                    {errors.category.message}
                   </span>
                 )}
               </div>
@@ -260,7 +329,9 @@ const NotificationForm = () => {
                 تصاویر(حد اکثر ۴ عکس)
               </label>
               <input
-                {...register("images")}
+                {...register("images", {
+                  required: "حداقل یک عکس الزامی هست",
+                })}
                 type="file"
                 id="images"
                 multiple
@@ -268,16 +339,49 @@ const NotificationForm = () => {
                 className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
                 onChange={handelFileChange}
               />
-              <p className="text-sm mt-2">
-                {fileCount > 0 ? `تعداد تصاویر انتخاب‌شده: ${fileCount}` : ""}
+              {errors.images && (
+                <span className="text-red-500 text-sm">
+                  {errors.images.message}
+                </span>
+              )}
+              <p className="text-sm mt-2 grid">
+                {fileCount > 0 ? (
+                  <>
+                    <span>تعداد تصاویر انتخاب‌شده: {fileCount}</span>
+                    <span className="text-[red]">
+                      تصویر اول در کارت اعلان استفاده خواهد شد.
+                    </span>
+                  </>
+                ) : (
+                  <></>
+                )}
               </p>
+              {/* Render selected image previews */}
+              {selectedFiles.length > 0 && (
+                <div className="mt-4 grid md:grid-cols-2  gap-4">
+                  {selectedFiles.map((file, index) => (
+                    <div key={index} className="relative">
+                      <img
+                        loading="lazy"
+                        src={URL.createObjectURL(file)}
+                        alt={`Selected ${index + 1}`}
+                        className="w-full h-36 object-cover rounded-md border"
+                      />
+                      <span className="absolute top-1 right-1 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                        {index + 1}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <button
+              disabled={isCompressing}
               type="submit"
               className="w-full bg-[#26394c] text-white py-2 px-4 rounded-md hover:bg-[#2c4257] transition duration-200"
             >
-              ارسال
+              ثبت
             </button>
           </form>
         </div>

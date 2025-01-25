@@ -12,7 +12,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
   if (!token) {
     res.status(401).json({
-      message: "به دلایل امنیتی وارد حساب خود بشید",
+      message: "وارد حساب خود بشید",
     });
     return;
   }
