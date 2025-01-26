@@ -29,14 +29,18 @@ export const userNotifications = async (req: Request, res: Response) => {
   }
 };
 
+//
 export const deleteNotification = async (req: Request, res: Response) => {
   const notificationId = req.params.id;
+
   try {
     const notification = await Notification.findById(notificationId);
+
     if (!notification) {
       res.status(404).json({
         message: "پست یافت نشد",
       });
+      return;
     }
 
     const images = notification?.images;
@@ -62,5 +66,43 @@ export const deleteNotification = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log("Error in deleteNotification", error);
+  }
+};
+
+//
+export const updateNotification = async (req: Request, res: Response) => {
+  const notificationId = req.params.id;
+  if (typeof req.body.price !== "number") {
+    res.status(400).json({
+      message: "قیمت باید شماره باشد",
+    });
+    return;
+  }
+  if (!notificationId) {
+    res.status(404).json({
+      message: "ایدی اعلان یافت نشد",
+    });
+    return;
+  }
+  const notification = await Notification.findById(notificationId);
+
+  try {
+    if (!notification) {
+      res.status(404).json({
+        message: "اعلانی یافت نشد",
+      });
+      return;
+    }
+    Object.assign(notification, req.body);
+    await notification?.save();
+    res.status(200).json({
+      message: "پست اپدیت شد",
+      notification,
+    });
+  } catch (error) {
+    console.log("Error updating the post const updateNotification: ", error);
+    res.status(500).json({
+      message: "مشکلی پیش آمد",
+    });
   }
 };

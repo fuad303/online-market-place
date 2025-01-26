@@ -5,7 +5,7 @@ import User from "../model/User";
 export const updateProfile = async (req: Request, res: Response) => {
   if (req.userId !== req.params.id) {
     res.status(401).json({
-      message: "Unauthorized",
+      message: "فاقد اجازه",
     });
     return;
   }

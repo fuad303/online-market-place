@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import path from "path";
 import fs from "fs";
+import path from "path";
 import multer from "multer";
+import { Request, Response } from "express";
 import Notification from "../model/Notification.model";
 
 const rootDir = path.resolve();
@@ -66,8 +66,6 @@ const uploadProfile = multer({ storage: profileImageStorage });
 export const profileUploadMiddleware = uploadProfile.single("profileImage");
 
 export const profileImage = async (req: Request, res: Response) => {
-  console.log("The user from imageupload", req.detailedUser);
-
   try {
     const user = req.detailedUser;
 
@@ -110,8 +108,6 @@ if (!fs.existsSync(notificationStoragePath)) {
 
 const notificationStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log("Here are the files: ", file);
-
     if (!file) {
       cb(new Error("No image found"), "");
     }
@@ -149,6 +145,12 @@ export const notificationUploadMiddleware = notificationUpload.array(
 
 export const newNotification = async (req: Request, res: Response) => {
   const userId = req.userId;
+  if (typeof req.body.price !== "number") {
+    res.status(400).json({
+      message: "قیمت باید شماره باشد",
+    });
+    return;
+  }
   if (!userId) {
     res.status(401).json({
       message: "دوباره وارد اکانت خود بشید",
