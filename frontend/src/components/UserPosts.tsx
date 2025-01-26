@@ -21,8 +21,7 @@ const UserPosts = () => {
 
   const handlePostDelete = async (id: string) => {
     try {
-      const res = await deleteAPost(id).unwrap();
-      alert(res.message);
+      await deleteAPost(id).unwrap();
       refetch();
     } catch (error) {
       alert(error);
@@ -140,9 +139,12 @@ const UserPosts = () => {
               >
                 حذف
               </button>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+              <NavLink
+                to="/edit-notification"
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+              >
                 ویرایش
-              </button>
+              </NavLink>
             </div>
           </div>
         ))}

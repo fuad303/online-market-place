@@ -10,6 +10,7 @@ import upload from "./routes/upploadd.router";
 import { updateRoute } from "./routes/update.router";
 import verifyToken from "./middleware/verifyToken.middleware";
 import notifications from "./routes/notifications";
+import Notification from "./model/Notification.model";
 
 const app = express();
 
@@ -42,10 +43,15 @@ const uploadPathNotificationImages = path.join(
 app.use("/uploads/profile-images", express.static(uploadPathProfileImage));
 app.use("/uploads/notifications", express.static(uploadPathNotificationImages));
 
-app.get("/", (req: Request, res: Response) => {
-  console.log("IP: ", req.ip);
-
-  res.send("Fuck you bitch");
+app.get("/feedmeed", async (req: Request, res: Response) => {
+  const feed = await Notification.find().sort({ createdAt: -1 });
+  if (!feed) {
+    res.status(404).json({
+      message: "اعلانی یافت نشد",
+    });
+    return;
+  }
+  res.status(200).json(feed);
 });
 app.use("/auth", authRouter);
 app.use("/user", verifyToken, userRouter);

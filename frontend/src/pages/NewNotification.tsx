@@ -108,8 +108,8 @@ const NotificationForm = () => {
       });
 
       await createNotification(formData).unwrap();
-      reset();
-      navigate("/");
+      // reset();
+      // navigate("/");
     } catch (error) {
       console.error("failed to submit notification", error);
     }
@@ -135,11 +135,11 @@ const NotificationForm = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             {error ? (
-              <h1 className="text-2xl font-bold text-red-600 mb-6 text-center">
+              <h1 className="text-2xl font-bold text-red-600 mb-8 text-center">
                 {(error as any)?.data?.message || "مشکلی پیش آمد"}
               </h1>
             ) : (
-              <h1 className="text-2xl font-bold mb-6 text-right">ثبت اعلان</h1>
+              <h1 className="text-2xl font-bold mb-8 text-center">ثبت اعلان</h1>
             )}
 
             {/* Category Selection */}

@@ -1,32 +1,34 @@
-import { createBrowserRouter } from "react-router-dom";
-import NewNotification from "./NewNotification";
-import MainLayout from "./MainLayout";
-import EditUser from "./EditUser";
+import Home from "./Home";
+import About from "./About";
+import Login from "./Login";
+import NotFound from "./404";
+import Signup from "./Signup";
 import Profile from "./Profile";
 import Auth from "./AuthLayout";
-import Signup from "./Signup";
-import NotFound from "./404";
-import Login from "./Login";
-import About from "./About";
-import Home from "./Home";
+import EditUser from "./EditUser";
+import MainLayout from "./MainLayout";
+import NewNotification from "./NewNotification";
+import EditNotification from "./EditNotification";
+import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
     element: <MainLayout />,
     children: [
       { path: "/", element: <Home /> },
+      { path: "*", element: <NotFound /> },
       { path: "/about", element: <About /> },
       { path: "/profile", element: <Profile /> },
-      { path: "/new-notification", element: <NewNotification /> },
       { path: "/edit-profile", element: <EditUser /> },
-      { path: "*", element: <NotFound /> },
+      { path: "/new-notification", element: <NewNotification /> },
+      { path: "/edit-notification", element: <EditNotification /> },
     ],
   },
   {
     element: <Auth />,
     children: [
-      { path: "/signup", element: <Signup /> },
       { path: "/login", element: <Login /> },
+      { path: "/signup", element: <Signup /> },
     ],
   },
 ]);
