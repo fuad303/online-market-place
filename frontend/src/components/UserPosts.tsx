@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   useDeleteAPostMutation,
   useGetUserPostsQuery,
@@ -5,7 +7,7 @@ import {
 import LoadingState from "./LoadingState";
 import { MapPin, Tag, Folder, Layers } from "lucide-react";
 import { NavLink } from "react-router-dom";
-
+import ImageModal from "./ImageModel";
 const UserPosts = () => {
   const { data, isLoading, error, refetch } = useGetUserPostsQuery(undefined, {
     refetchOnMountOrArgChange: true,
@@ -13,6 +15,9 @@ const UserPosts = () => {
 
   const [deleteAPost, { isLoading: deleteLoading, error: deleteError }] =
     useDeleteAPostMutation();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
 
   const handlePostDelete = async (id: string) => {
     try {
@@ -22,6 +27,16 @@ const UserPosts = () => {
     } catch (error) {
       alert(error);
     }
+  };
+
+  const openModal = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage("");
   };
 
   if (isLoading || deleteLoading) return <LoadingState />;
@@ -106,9 +121,10 @@ const UserPosts = () => {
                   <img
                     key={index}
                     loading="lazy"
-                    className="w-full h-24 rounded-md object-contain border border-gray-600"
+                    className="w-full h-24 rounded-md object-contain border border-gray-600 cursor-pointer"
                     src={`http://localhost:4000/${image}`}
                     alt={`Post image ${index}`}
+                    onClick={() => openModal(`http://localhost:4000/${image}`)} // Open modal on click
                   />
                 ))}
               </div>
@@ -131,6 +147,13 @@ const UserPosts = () => {
           </div>
         ))}
       </div>
+
+      {/* Image Modal */}
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        imageUrl={selectedImage}
+      />
     </div>
   );
 };

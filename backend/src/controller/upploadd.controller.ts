@@ -145,7 +145,10 @@ export const notificationUploadMiddleware = notificationUpload.array(
 
 export const newNotification = async (req: Request, res: Response) => {
   const userId = req.userId;
-  if (typeof req.body.price !== "number") {
+
+  const price = parseFloat(req.body.price);
+
+  if (typeof price !== "number") {
     res.status(400).json({
       message: "قیمت باید شماره باشد",
     });
