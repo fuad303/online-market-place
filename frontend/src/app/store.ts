@@ -5,11 +5,13 @@ import storage from "redux-persist/lib/storage";
 import userReducer from "./features/userSlice";
 import fileApi from "./api/uploadApi";
 import notificationsApi from "./api/notificationsApi";
+import feedApi from "./api/feedApi";
 const rootReducer = combineReducers({
   authApi: authApi.reducer,
   user: userReducer,
   fileApi: fileApi.reducer,
   notificationsApi: notificationsApi.reducer,
+  feedApi: feedApi.reducer,
 });
 
 const persistConfig = {
@@ -29,7 +31,8 @@ export const store = configureStore({
     }).concat(
       fileApi.middleware,
       authApi.middleware,
-      notificationsApi.middleware
+      notificationsApi.middleware,
+      feedApi.middleware
     ),
 });
 

@@ -61,7 +61,7 @@ const NotificationForm = () => {
         for (const file of Array.from(files)) {
           try {
             const options = {
-              maxSizeMB: 0.5,
+              maxSizeMB: 2,
               maxWidthOrHeight: 720,
               useWebWorker: true,
             };
@@ -74,7 +74,10 @@ const NotificationForm = () => {
         }
 
         setFileCount(compressedFiles.length);
-        setSelectedFiles(compressedFiles);
+        setSelectedFiles((pre) => {
+          const updated = [...compressedFiles, ...pre];
+          return updated.slice(0, 4);
+        });
       } catch (error) {
         console.error("An error occurred while compressing files", error);
       } finally {
@@ -86,7 +89,6 @@ const NotificationForm = () => {
   const onSubmit = async (data: NotificationField) => {
     try {
       const formData = new FormData();
-      console.log("You check the photos here", formData);
 
       formData.append("title", data.title);
       formData.append("description", data.description || "");
@@ -108,8 +110,8 @@ const NotificationForm = () => {
       });
 
       await createNotification(formData).unwrap();
-      // reset();
-      // navigate("/");
+      reset();
+      navigate("/");
     } catch (error) {
       console.error("failed to submit notification", error);
     }
@@ -341,9 +343,6 @@ const NotificationForm = () => {
                 {fileCount > 0 ? (
                   <>
                     <span>تعداد تصاویر انتخاب‌شده: {fileCount}</span>
-                    <span className="text-[red]">
-                      تصویر اول در کارت اعلان استفاده خواهد شد.
-                    </span>
                   </>
                 ) : (
                   <></>
@@ -367,7 +366,7 @@ const NotificationForm = () => {
                         className="w-full h-36 object-contain rounded-md border"
                       />
                       <span className="absolute top-1 right-1 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                        {index + 1}
+                        {1 + index}
                       </span>
                     </div>
                   ))}

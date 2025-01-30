@@ -9,11 +9,9 @@ import { PersistGate } from "redux-persist/integration/react";
 import LoadingState from "./components/LoadingState";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={<LoadingState />} persistor={persistor}>
-        <RouterProvider router={router} />
-      </PersistGate>
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={<LoadingState />} persistor={persistor}>
+      <RouterProvider router={router} />
+    </PersistGate>
+  </Provider>
 );

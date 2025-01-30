@@ -64,7 +64,7 @@ const UserPosts = () => {
       <div
         className={`grid gap-6 ${data?.length === 1 ? "items-center" : ""}`}
         style={{
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
         }}
       >
         {data?.map((post) => (
