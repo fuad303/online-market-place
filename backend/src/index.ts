@@ -11,6 +11,7 @@ import { updateRoute } from "./routes/update.router";
 import verifyToken from "./middleware/verifyToken.middleware";
 import notifications from "./routes/notifications";
 import Notification from "./model/Notification.model";
+import home from "./routes/homeRoute";
 
 const app = express();
 
@@ -43,21 +44,12 @@ const uploadPathNotificationImages = path.join(
 app.use("/uploads/profile-images", express.static(uploadPathProfileImage));
 app.use("/uploads/notifications", express.static(uploadPathNotificationImages));
 
-app.get("/feedmeed", async (req: Request, res: Response) => {
-  const feed = await Notification.find().sort({ createdAt: -1 });
-  if (!feed) {
-    res.status(404).json({
-      message: "اعلانی یافت نشد",
-    });
-    return;
-  }
-  res.status(200).json(feed);
-});
 app.use("/auth", authRouter);
 app.use("/user", verifyToken, userRouter);
 app.use("/upploadd", verifyToken, upload);
 app.use("/update", verifyToken, updateRoute);
 app.use("/notifications", verifyToken, notifications);
+app.use("/home", home);
 app.listen(4000, () => {
   console.log("Listening on port 4000");
 });

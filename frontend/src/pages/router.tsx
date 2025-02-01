@@ -10,6 +10,7 @@ import MainLayout from "./MainLayout";
 import NewNotification from "./NewNotification";
 import EditNotification from "./EditNotification";
 import { createBrowserRouter } from "react-router-dom";
+import Post from "./Post";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "*", element: <NotFound /> },
+      { path: "/post/:id", element: <Post /> },
       { path: "/about", element: <About /> },
       { path: "/profile", element: <Profile /> },
       { path: "/edit-profile", element: <EditUser /> },

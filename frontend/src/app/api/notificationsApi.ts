@@ -20,20 +20,20 @@ interface Deleteresponse {
 const notificationsApi = createApi({
   reducerPath: "notificationsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:4000/",
+    baseUrl: "http://localhost:4000/notifications/",
     credentials: "include",
   }),
   endpoints: (builder) => ({
     getUserPosts: builder.query<NotificationsInterface[], void>({
       query: () => ({
-        url: "notifications/getAuserNotifications",
+        url: "getAuserNotifications",
         method: "GET",
       }),
     }),
 
     deleteAPost: builder.mutation<Deleteresponse, string>({
       query: (id) => ({
-        url: `notifications/deleteANotification${id}`,
+        url: `deleteANotification${id}`,
         method: "DELETE",
       }),
     }),

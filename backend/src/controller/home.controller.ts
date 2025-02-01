@@ -1,0 +1,28 @@
+import { Request, Response } from "express";
+import Notification from "../model/Notification.model";
+//
+export const feedmeed = async (req: Request, res: Response) => {
+  const feed = await Notification.find().sort({ createdAt: -1 });
+  if (!feed) {
+    res.status(404).json({
+      message: "اعلانی یافت نشد",
+    });
+    return;
+  }
+  res.status(200).json(feed);
+};
+
+//
+
+export const getAPost = async (req: Request, res: Response) => {
+  try {
+    const aPost = await Notification.findById(req.params.id);
+    if (!aPost) {
+      res.status(404).json({ message: "پست یافت نشد" });
+      return;
+    }
+    res.status(200).json(aPost);
+  } catch (error) {
+    console.warn("Best regards from: getAPost", error);
+  }
+};

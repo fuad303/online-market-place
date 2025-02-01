@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { NotificationsInterface } from "./notificationsApi";
 export interface FeedNotificationsInterface {
   _id: string;
   title: string;
@@ -14,7 +15,7 @@ export interface FeedNotificationsInterface {
 const feedApi = createApi({
   reducerPath: "feedApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:4000/",
+    baseUrl: "http://localhost:4000/home/",
   }),
   endpoints: (builder) => ({
     getLatestNotifications: builder.query<FeedNotificationsInterface[], void>({
@@ -23,8 +24,14 @@ const feedApi = createApi({
         method: "GET",
       }),
     }),
+    getAPost: builder.query<NotificationsInterface, string>({
+      query: (id: string) => ({
+        url: `getAPost/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetLatestNotificationsQuery } = feedApi;
+export const { useGetLatestNotificationsQuery, useGetAPostQuery } = feedApi;
 export default feedApi;

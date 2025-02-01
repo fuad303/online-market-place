@@ -123,7 +123,7 @@ const UserPosts = () => {
                     className="w-full h-24 rounded-md object-contain border border-gray-600 cursor-pointer"
                     src={`http://localhost:4000/${image}`}
                     alt={`Post image ${index}`}
-                    onClick={() => openModal(`http://localhost:4000/${image}`)} // Open modal on click
+                    onClick={() => openModal(`http://localhost:4000/${image}`)}
                   />
                 ))}
               </div>
