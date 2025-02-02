@@ -52,14 +52,12 @@ export const signup = async (
     const hashedPassword = await argon2.hash(password);
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      console.log("User is here", existingUser);
       res.status(400).json({
         message: "نام کاریری قابل دسترس نیست",
       });
       return;
     }
     const existingEmail = await User.findOne({ email });
-    console.log("Email is here", existingEmail);
 
     if (existingEmail) {
       res.status(400).json({

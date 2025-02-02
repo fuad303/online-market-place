@@ -4,8 +4,7 @@ import { Folder, Layers, MapPin, Tag } from "lucide-react";
 import { useGetLatestNotificationsQuery } from "../app/api/feedApi";
 import { NavLink } from "react-router-dom";
 const Home = () => {
-  const { data, isLoading } = useGetLatestNotificationsQuery(undefined);
-  console.log("Data fetched", data);
+  const { data, isLoading } = useGetLatestNotificationsQuery();
 
   if (isLoading) return <LoadingState />;
   return (
@@ -26,7 +25,7 @@ const Home = () => {
               <div className="mt-4 ">
                 <img
                   loading="lazy"
-                  className="w-full h-44 rounded-md object-contain border border-gray-600 transition-transform duration-200 hover:scale-105"
+                  className="w-full h-52 rounded-md object-cover border border-gray-600 transition-transform duration-200 hover:scale-105"
                   src={`http://192.168.0.105:4000/${post.images[0]}`}
                   alt={`Post image `}
                 />

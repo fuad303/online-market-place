@@ -1,14 +1,71 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useGetAPostQuery } from "../app/api/feedApi";
+import React, { useState, memo } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import {
+  useGetAPostQuery,
+  useLazyGetUserCredentialsQuery,
+} from "../app/api/feedApi";
 import LoadingState from "../components/LoadingState";
+import LittleLoading from "../components/LittleLoading";
 import { MapPin, Tag, Folder, Layers } from "lucide-react";
 import ImageModal from "../components/ImageModel";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
 
-const Post = () => {
-  const { id } = useParams();
+export interface UserCredentials {
+  username: string;
+  email: string;
+  phone: string;
+  message?: string;
+}
+
+interface CredentialsDisplayProps {
+  credentials: UserCredentials;
+  error?: FetchBaseQueryError | SerializedError;
+}
+
+const CredentialsDisplay: React.FC<CredentialsDisplayProps> = memo(
+  ({ credentials, error }) => {
+    if (error) {
+      return (
+        <div className="mt-6 text-center text-sm text-red-500">
+          خطا در دریافت اطلاعات تماس. لطفاً دوباره تلاش کنید.
+        </div>
+      );
+    }
+    return (
+      <div className="mt-6 p-3 border border-gray-300 rounded text-center text-sm text-white bg-[#1b344e]">
+        <div>
+          ایمیل:{" "}
+          <a
+            href={`mailto:${credentials.email}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 underline"
+          >
+            {credentials.email}
+          </a>
+        </div>
+        <div>
+          تلفن:{" "}
+          <a
+            href={`tel:+93${credentials.phone}`}
+            className="text-blue-400 underline"
+          >
+            +93{credentials.phone}
+          </a>
+        </div>
+      </div>
+    );
+  }
+);
+
+const Post: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+  const user = useSelector((state: RootState) => state.user);
 
   if (!id) {
     return (
@@ -30,6 +87,10 @@ const Post = () => {
   }
 
   const { data: post, isLoading, error } = useGetAPostQuery(id);
+  const [
+    getUserCredentials,
+    { data: userCredentials, isLoading: loadingUser, error: userError },
+  ] = useLazyGetUserCredentialsQuery();
 
   if (isLoading) return <LoadingState />;
   if (error)
@@ -58,26 +119,6 @@ const Post = () => {
         <p className="text-gray-300 text-sm mb-4 break-words">
           {post.description}
         </p>
-
-        {/* Images Section */}
-        {post.images && post.images.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-            {post.images.map((image, index) => (
-              <div
-                key={index}
-                className="overflow-hidden rounded-md border border-gray-600"
-              >
-                <img
-                  loading="lazy"
-                  src={`http://192.168.0.105:4000/${image}`}
-                  alt={`تصویر ${index + 1} از پست ${post.title}`}
-                  className="w-full h-auto object-cover cursor-pointer transition-transform duration-200 hover:scale-105"
-                  onClick={() => handleImageClick(image)}
-                />
-              </div>
-            ))}
-          </div>
-        )}
 
         {/* Post Details */}
         <div className="space-y-4">
@@ -110,6 +151,30 @@ const Post = () => {
             </div>
           )}
         </div>
+        {/* Images Section */}
+        {post.images && post.images.length > 0 && (
+          <div
+            className="grid gap-4 mb-6 pt-4"
+            style={{
+              gridAutoColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            }}
+          >
+            {post.images.map((image, index) => (
+              <div
+                key={index}
+                className="overflow-hidden rounded-md border border-gray-600"
+              >
+                <img
+                  loading="lazy"
+                  src={`http://192.168.0.105:4000/${image}`}
+                  alt={`تصویر ${index + 1} از پست ${post.title}`}
+                  className="w-full h-52 object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
+                  onClick={() => handleImageClick(image)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Image Modal */}
@@ -118,6 +183,36 @@ const Post = () => {
         onClose={() => setIsModalOpen(false)}
         imageUrl={selectedImage}
       />
+
+      {/* User Credentials Section */}
+      {user ? (
+        <>
+          {userCredentials ? (
+            <CredentialsDisplay
+              credentials={userCredentials}
+              error={userError}
+            />
+          ) : loadingUser ? (
+            <div className="flex justify-center items-center pt-4">
+              <LittleLoading />
+            </div>
+          ) : (
+            <button
+              onClick={() => getUserCredentials(post.seller)}
+              className="block mx-auto mt-6 hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm"
+            >
+              دیدن اطلاعات تماس
+            </button>
+          )}
+        </>
+      ) : (
+        <NavLink
+          to="/login"
+          className="block mx-auto mt-6 hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm"
+        >
+          دیدن اطلاعات تماس
+        </NavLink>
+      )}
     </div>
   );
 };

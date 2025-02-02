@@ -12,10 +12,18 @@ export interface FeedNotificationsInterface {
   seller: string;
   createdAt?: Date;
 }
+
+interface UserCredentials {
+  username: string;
+  email: string;
+  phone: string;
+  message?: string;
+}
 const feedApi = createApi({
   reducerPath: "feedApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://192.168.0.105:4000/home/",
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getLatestNotifications: builder.query<FeedNotificationsInterface[], void>({
@@ -30,8 +38,20 @@ const feedApi = createApi({
         method: "GET",
       }),
     }),
+    getUserCredentials: builder.query<UserCredentials, string>({
+      query: (seller: string) => ({
+        url: `getUserCredentials/${seller}`,
+        method: "GET",
+      }),
+
+      keepUnusedDataFor: 60,
+    }),
   }),
 });
 
-export const { useGetLatestNotificationsQuery, useGetAPostQuery } = feedApi;
+export const {
+  useGetLatestNotificationsQuery,
+  useGetAPostQuery,
+  useLazyGetUserCredentialsQuery,
+} = feedApi;
 export default feedApi;
