@@ -15,7 +15,7 @@ export interface FeedNotificationsInterface {
 const feedApi = createApi({
   reducerPath: "feedApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:4000/home/",
+    baseUrl: "http://192.168.0.105:4000/home/",
   }),
   endpoints: (builder) => ({
     getLatestNotifications: builder.query<FeedNotificationsInterface[], void>({

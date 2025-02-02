@@ -14,7 +14,7 @@ interface UpdateArgs {
 const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:4000/",
+    baseUrl: "http://192.168.0.105:4000/",
     credentials: "include",
   }),
   tagTypes: ["Auth"],

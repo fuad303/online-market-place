@@ -99,7 +99,7 @@ const EdiNotification = () => {
                 عنوان
               </label>
               <input
-                {...register("title", { required: "عنوان الزامی است" })}
+                {...register("title")}
                 type="text"
                 id="title"
                 className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -130,7 +130,7 @@ const EdiNotification = () => {
                 قیمت
               </label>
               <input
-                {...register("price", { required: "قیمت الزامی است" })}
+                {...register("price")}
                 type="number"
                 id="price"
                 className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -148,7 +148,7 @@ const EdiNotification = () => {
                 مکان
               </label>
               <input
-                {...register("location", { required: "مکان الزامی است" })}
+                {...register("location")}
                 type="text"
                 id="location"
                 className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"

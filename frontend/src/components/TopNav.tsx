@@ -15,7 +15,7 @@ const TopNav = () => {
             <NavLink to="/profile">
               {user.profileImage ? (
                 <img
-                  src={`http://localhost:4000/${user.profileImage}`}
+                  src={`http://192.168.0.105:4000/${user.profileImage}`}
                   loading="lazy"
                   className="size-14 h cursor-pointer rounded-full object-cover border-4 border-[#324455] "
                 />

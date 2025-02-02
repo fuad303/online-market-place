@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+
 interface ImageModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -9,16 +11,27 @@ const ImageModal: React.FC<ImageModalProps> = ({
   onClose,
   imageUrl,
 }) => {
+  useEffect(() => {
+    if (isOpen) {
+      // Save the original style
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      // Prevent scrolling on mount
+      document.body.style.overflow = "hidden";
+
+      // Re-enable scrolling when modal is closed/unmounted
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 overflow-hidden flex items-center justify-center bg-black bg-opacity-75 z-50">
       <div className="relative">
         <button
-          className="absolute top-2 right-2 text-white text-2xl"
+          className="fixed top-2 right-2 text-white text-2xl"
           onClick={onClose}
         >
           &times;

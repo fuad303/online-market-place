@@ -18,13 +18,15 @@ const Login = () => {
 
   const onSubmit = async (data: FormField) => {
     try {
+      console.log("We entered the onsubmit");
+
       const res = await login(data).unwrap();
 
       dispatch(setUser(res));
       reset();
       navigate("/");
     } catch (err: any) {
-      console.error("Failed to login");
+      console.error("Failed to login", error);
     }
   };
   if (isLoading) {

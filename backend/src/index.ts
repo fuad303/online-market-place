@@ -10,13 +10,12 @@ import upload from "./routes/upploadd.router";
 import { updateRoute } from "./routes/update.router";
 import verifyToken from "./middleware/verifyToken.middleware";
 import notifications from "./routes/notifications";
-import Notification from "./model/Notification.model";
 import home from "./routes/homeRoute";
 
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "http://192.168.0.105:5173"],
   credentials: true,
 };
 
@@ -50,6 +49,5 @@ app.use("/upploadd", verifyToken, upload);
 app.use("/update", verifyToken, updateRoute);
 app.use("/notifications", verifyToken, notifications);
 app.use("/home", home);
-app.listen(4000, () => {
-  console.log("Listening on port 4000");
-});
+
+app.listen(4000, "0.0.0.0", () => console.log("Server running on port 4000"));

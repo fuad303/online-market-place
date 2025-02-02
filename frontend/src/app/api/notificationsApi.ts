@@ -20,7 +20,7 @@ interface Deleteresponse {
 const notificationsApi = createApi({
   reducerPath: "notificationsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:4000/notifications/",
+    baseUrl: "http://192.168.0.105:4000/notifications/",
     credentials: "include",
   }),
   endpoints: (builder) => ({

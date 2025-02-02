@@ -51,23 +51,8 @@ const SmallScreenNav = () => {
               <div className="flex items-center space-x-3">
                 {user ? (
                   <>
-                    <NavLink
-                      to="/profile"
-                      className="p-1 rounded-full hover:bg-[#3c5060]"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-gray-500 w-8 h-8"
-                      >
-                        <circle cx="12" cy="7" r="4"></circle>
-                        <path d="M5.5 20c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5H5.5z"></path>
-                      </svg>
+                    <NavLink to="/" className="p-1 rounded-full ">
+                      <Logo />
                     </NavLink>
                     <NavLink
                       to="new-notification"

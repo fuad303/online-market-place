@@ -27,7 +27,7 @@ const formattedDate = format(now, "yyyy_MM_dd HH_mm_ss.SSS");
 const fileApi = createApi({
   reducerPath: "fileApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:4000/",
+    baseUrl: "http://192.168.0.105:4000/",
     credentials: "include",
   }),
   endpoints: (builder) => ({

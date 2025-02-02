@@ -42,7 +42,7 @@ const UserPosts = () => {
 
   if (error || deleteError)
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-8 ">
         <h1 className="text-2xl font-bold text-red-600 mb-6">
           {(error as any)?.data?.message || "مشکلی پیش آمد"}
         </h1>
@@ -74,25 +74,27 @@ const UserPosts = () => {
               data?.length === 1 ? "max-w-sm" : ""
             }`}
           >
-            {/* Post Title and Description */}
             <div>
-              <h1 className="text-lg font-bold text-white mb-2 border-b pb-2 border-gray-600">
+              {/* Post Title and Description */}
+              <h1 className="text-lg font-bold text-white mb-2 border-b pb-2 border-gray-600 break-words">
                 {post.title}
               </h1>
-              <p className="text-gray-300 text-sm mb-4">{post.description}</p>
+              <p className="text-gray-300 text-sm mb-4 break-words">
+                {post.description}
+              </p>
 
               <div className="space-y-2">
                 {/* Location */}
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="text-[#FFC107] w-5 h-5 shrink-0" />
                   <span className="text-gray-400">موقعیت:</span>
-                  <span className="text-white">{post.location}</span>
+                  <span className="text-white break-all">{post.location}</span>
                 </div>
                 {/* Price */}
                 <div className="flex items-center gap-2 text-sm">
                   <Tag className="text-[#FFC107] w-5 h-5 shrink-0" />
-                  <span className="text-gray-400">قیمت:</span>
-                  <span className="text-white">
+                  <span className="text-gray-400 ">قیمت:</span>
+                  <span className="text-white break-all">
                     {post.price.toLocaleString()} افغانی
                   </span>
                 </div>
@@ -120,10 +122,12 @@ const UserPosts = () => {
                   <img
                     key={index}
                     loading="lazy"
-                    className="w-full h-24 rounded-md object-contain border border-gray-600 cursor-pointer"
-                    src={`http://localhost:4000/${image}`}
+                    className="w-full h-24 rounded-md object-contain border border-gray-600 cursor-pointer transition-transform duration-200 hover:scale-105"
+                    src={`http://192.168.0.105:4000/${image}`}
                     alt={`Post image ${index}`}
-                    onClick={() => openModal(`http://localhost:4000/${image}`)}
+                    onClick={() =>
+                      openModal(`http://192.168.0.105:4000/${image}`)
+                    }
                   />
                 ))}
               </div>

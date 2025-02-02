@@ -66,7 +66,7 @@ const Profile = () => {
   useEffect(() => {
     if (user?.profileImage) {
       const timestamp = new Date().getTime();
-      const imgUrl = `http://localhost:4000/${user.profileImage}?t=${timestamp}`;
+      const imgUrl = `http://192.168.0.105:4000/${user.profileImage}?t=${timestamp}`;
       setUserImage(imgUrl);
     }
   }, [user?.profileImage]);
@@ -104,7 +104,7 @@ const Profile = () => {
           {(error as any)?.data?.message || "مشکلی پیش آمد"}
         </h1>
       ) : (
-        <div className="p-4 flex items-center justify-center">
+        <div className=" flex items-center justify-center">
           {user ? (
             <div className="w-full max-w-full grid gap-6">
               {/* Profile Card */}
