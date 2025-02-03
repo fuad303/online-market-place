@@ -45,7 +45,7 @@ const authApi = createApi({
         url: "auth/logout",
         method: "GET",
       }),
-      invalidatesTags: ["Auth"], // Invalidate cached authentication-related data
+      invalidatesTags: ["Auth"],
     }),
   }),
 });

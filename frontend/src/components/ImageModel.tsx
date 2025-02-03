@@ -13,17 +13,22 @@ const ImageModal: React.FC<ImageModalProps> = ({
 }) => {
   useEffect(() => {
     if (isOpen) {
-      // Save the original style
       const originalStyle = window.getComputedStyle(document.body).overflow;
-      // Prevent scrolling on mount
       document.body.style.overflow = "hidden";
 
-      // Re-enable scrolling when modal is closed/unmounted
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          onClose();
+        }
+      };
+      document.addEventListener("keydown", handleKeyDown);
+
       return () => {
         document.body.style.overflow = originalStyle;
+        document.removeEventListener("keydown", handleKeyDown);
       };
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

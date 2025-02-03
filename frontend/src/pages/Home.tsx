@@ -4,7 +4,10 @@ import { Folder, Layers, MapPin, Tag } from "lucide-react";
 import { useGetLatestNotificationsQuery } from "../app/api/feedApi";
 import { NavLink } from "react-router-dom";
 const Home = () => {
-  const { data, isLoading } = useGetLatestNotificationsQuery();
+  const { data: posts, isLoading } = useGetLatestNotificationsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+  console.log("Home component", posts);
 
   if (isLoading) return <LoadingState />;
   return (
@@ -15,7 +18,7 @@ const Home = () => {
         gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
       }}
     >
-      {data?.map((post) => (
+      {posts?.map((post) => (
         <NavLink to={`/post/${post._id}`} key={post._id}>
           <motion.div
             className={`bg-[#1b344e] p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300  justify-between cursor-pointer`}
@@ -58,7 +61,7 @@ const Home = () => {
                   </span>
                 </div>
                 {/* Category */}
-                <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-2 text-sm line-clamp-1 break-words">
                   <Folder className="text-[#FFC107] w-5 h-5 shrink-0" />
                   <span className="text-gray-400">دسته‌بندی:</span>
                   <span className="text-white">{post.category}</span>

@@ -139,8 +139,8 @@ const Post: React.FC = () => {
           {/* Category */}
           <div className="flex items-center gap-2 text-sm flex-wrap">
             <Folder className="text-[#FFC107] w-5 h-5" />
-            <span className="text-gray-400 break-words">دسته‌بندی:</span>
-            <span className="text-white break-words">{post.category}</span>
+            <span className="text-gray-400">دسته‌بندی:</span>
+            <span className="text-white break-all">{post.category}</span>
           </div>
           {/* Subcategory (Optional) */}
           {post.subCategory && (

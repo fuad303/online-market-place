@@ -4,6 +4,8 @@ import User from "../model/User";
 //
 export const feedmeed = async (req: Request, res: Response) => {
   const feed = await Notification.find().sort({ createdAt: -1 });
+  console.log("the Feedmeed has been hit");
+
   if (!feed) {
     res.status(404).json({
       message: "اعلانی یافت نشد",
