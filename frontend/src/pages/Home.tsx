@@ -36,7 +36,8 @@ const Home: React.FC = () => {
     {
       refetchOnMountOrArgChange: false,
       refetchOnReconnect: true,
-      refetchOnFocus: false,
+      refetchOnFocus: true,
+      pollingInterval: 12000,
     }
   ) as { data?: FeedResponse; isLoading: boolean; isFetching: boolean };
 
@@ -79,7 +80,7 @@ const Home: React.FC = () => {
     <div dir="RTL" className="grid gap-4">
       <div
         className="grid gap-4"
-        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}
+        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))" }}
       >
         {allPosts.map((post) => (
           <NavLink to={`/post/${post._id}`} key={post._id}>

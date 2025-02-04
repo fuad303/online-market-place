@@ -106,3 +106,14 @@ export const updateNotification = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const search = async (req: Request, res: Response) => {
+  try {
+  } catch (error) {
+    console.log("Best regards from search", error);
+
+    res.status(500).json({
+      message: "مشکلی پیش آمد",
+    });
+  }
+};

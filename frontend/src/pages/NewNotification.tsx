@@ -1,6 +1,6 @@
-import { RootState } from "../app/store";
+import { AppDispatch, RootState } from "../app/store";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import car from "../components/svgs/car.svg";
 import shop from "../components/svgs/shop.svg";
@@ -12,6 +12,7 @@ import laptop from "../components/svgs/laptop.svg";
 import LoadingState from "../components/LoadingState";
 import imageCompression from "browser-image-compression";
 import { useCreateNotificationMutation } from "../app/api/uploadApi";
+import feedApi from "../app/api/feedApi";
 
 interface NotificationField {
   title: string;
@@ -30,6 +31,7 @@ const NotificationForm = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isCompressing, setIsCompressing] = useState<boolean>(false);
   const [otherCategories, setOtherCategories] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
   const [createNotification, { isLoading, error }] =
     useCreateNotificationMutation();
 
@@ -110,8 +112,10 @@ const NotificationForm = () => {
       });
 
       await createNotification(formData).unwrap();
-      // reset();
-      // navigate("/");
+      reset();
+      dispatch(feedApi.util.resetApiState());
+
+      navigate("/");
     } catch (error) {
       console.error("failed to submit notification", error);
     }
@@ -324,7 +328,9 @@ const NotificationForm = () => {
                 تصاویر(حد اکثر ۴ عکس)
               </label>
               <input
-                {...register("images")}
+                {...register("images", {
+                  required: "حداقل یک عکس الزامی هست",
+                })}
                 type="file"
                 id="images"
                 multiple

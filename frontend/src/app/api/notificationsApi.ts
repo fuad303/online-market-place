@@ -37,9 +37,16 @@ const notificationsApi = createApi({
         method: "DELETE",
       }),
     }),
+    search: builder.query<NotificationsInterface[], string>({
+      query: (searchTerm: string) =>
+        `searchNotifications?query=${encodeURIComponent(searchTerm)}`,
+    }),
   }),
 });
 
-export const { useGetUserPostsQuery, useDeleteAPostMutation } =
-  notificationsApi;
+export const {
+  useGetUserPostsQuery,
+  useDeleteAPostMutation,
+  useLazySearchQuery,
+} = notificationsApi;
 export default notificationsApi;

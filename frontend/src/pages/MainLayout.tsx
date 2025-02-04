@@ -7,11 +7,11 @@ const MainLayout = () => {
   return (
     <div className="min-h-screen text-white ">
       <nav className="">
-        <div className="sm:hidden lg:block flex ">
+        <div className="sm:hidden md:block flex ">
           <TopNav />
           <BottomNav />
         </div>
-        <div className="lg:hidden">
+        <div className="md:hidden">
           <SmallScreenNav />
         </div>
       </nav>
