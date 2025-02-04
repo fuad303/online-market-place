@@ -37,10 +37,12 @@ const notificationsApi = createApi({
         method: "DELETE",
       }),
     }),
+    //
     search: builder.query<NotificationsInterface[], string>({
       query: (searchTerm: string) =>
         `searchNotifications?query=${encodeURIComponent(searchTerm)}`,
     }),
+    //
   }),
 });
 

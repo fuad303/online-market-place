@@ -5,13 +5,18 @@ import {
   updateNotification,
   userNotifications,
 } from "../controller/notifications.controller";
+import verifyToken from "../middleware/verifyToken.middleware";
 const notifications = express.Router();
 
-notifications.get("/getAuserNotifications", userNotifications);
+notifications.get("/getAuserNotifications", verifyToken, userNotifications);
 
-notifications.delete("/deleteANotification:id", deleteNotification);
+notifications.delete(
+  "/deleteANotification:id",
+  verifyToken,
+  deleteNotification
+);
 
-notifications.put("/updateNotification/:id", updateNotification);
+notifications.put("/updateNotification/:id", verifyToken, updateNotification);
 
 notifications.get("/searchNotifications", search);
 

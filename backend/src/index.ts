@@ -47,7 +47,7 @@ app.use("/auth", authRouter);
 app.use("/user", verifyToken, userRouter);
 app.use("/upploadd", verifyToken, upload);
 app.use("/update", verifyToken, updateRoute);
-app.use("/notifications", verifyToken, notifications);
+app.use("/notifications", notifications);
 app.use("/home", home);
 
 app.listen(4000, "0.0.0.0", () => console.log("Server running on port 4000"));

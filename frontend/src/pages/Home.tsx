@@ -37,9 +37,9 @@ const Home: React.FC = () => {
       refetchOnMountOrArgChange: false,
       refetchOnReconnect: true,
       refetchOnFocus: true,
-      pollingInterval: 12000,
     }
   ) as { data?: FeedResponse; isLoading: boolean; isFetching: boolean };
+  console.log(posts);
 
   useEffect(() => {
     if (posts) {

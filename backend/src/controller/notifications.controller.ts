@@ -108,7 +108,26 @@ export const updateNotification = async (req: Request, res: Response) => {
 };
 
 export const search = async (req: Request, res: Response) => {
+  const query = req.query.query as string | undefined;
+
+  if (!query) {
+    res.status(400).json({
+      message: "پارامتر جستجو یافت نشد",
+    });
+    return;
+  }
   try {
+    const regex = new RegExp(query, "i");
+    const result = await Notification.find({
+      $or: [
+        { title: { $regex: regex } },
+        { description: { $regex: regex } },
+        { location: { $regex: regex } },
+        { category: { $regex: regex } },
+      ],
+    });
+
+    res.status(200).json(result);
   } catch (error) {
     console.log("Best regards from search", error);
 

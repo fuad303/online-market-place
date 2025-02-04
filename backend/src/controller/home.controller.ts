@@ -11,7 +11,8 @@ export const feedmeed = async (req: Request, res: Response) => {
     const feed = await Notification.find()
       .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .lean();
 
     if (feed.length === 0) {
       res.status(200).json({
@@ -26,7 +27,15 @@ export const feedmeed = async (req: Request, res: Response) => {
       });
       return;
     }
-    res.status(200).json(feed);
+
+    const modifiedFeed = feed.map((notification) => ({
+      ...notification,
+      images: notification.images.length > 0 ? [notification.images[0]] : [],
+    }));
+
+    console.log(modifiedFeed);
+
+    res.status(200).json(modifiedFeed);
   } catch (error) {
     console.log("Best regards feedmeed", error);
 

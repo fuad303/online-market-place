@@ -1,7 +1,8 @@
-// SearchBar.tsx
 import React from "react";
 import { Search, X } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useLazySearchQuery } from "../app/api/notificationsApi";
+import LoadingState from "./LoadingState";
 
 interface SearchInterface {
   searchQuery: string;
@@ -13,12 +14,18 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
   const { register, handleSubmit, reset } = useForm<SearchInterface>();
+  const [search, { data: searchResult, isLoading: loading, error }] =
+    useLazySearchQuery();
 
   const submit = (data: SearchInterface) => {
-    console.log(data);
+    const { searchQuery } = data;
+    search(searchQuery);
     reset();
   };
 
+  if (loading) return <LoadingState />;
+  if (error)
+    return <div className="p-4 text-red-500">Error loading search results</div>;
   return (
     <div className="flex items-center justify-center max-w-3xl">
       <form
