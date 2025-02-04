@@ -26,9 +26,12 @@ const feedApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getLatestNotifications: builder.query<FeedNotificationsInterface[], void>({
-      query: () => ({
-        url: "feedmeed",
+    getLatestNotifications: builder.query<
+      FeedNotificationsInterface[],
+      { page: number; limit: number }
+    >({
+      query: ({ page = 1, limit = 15 }) => ({
+        url: `feedmeed?page=${page}&limit=${limit}`,
         method: "GET",
       }),
     }),

@@ -99,7 +99,7 @@ const TopNav = () => {
         </form>
       </div>
       <div className="text-white">
-        <NavLink className="" to="/">
+        <NavLink to="/">
           <Logo />
         </NavLink>
       </div>

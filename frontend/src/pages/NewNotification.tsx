@@ -110,8 +110,8 @@ const NotificationForm = () => {
       });
 
       await createNotification(formData).unwrap();
-      reset();
-      navigate("/");
+      // reset();
+      // navigate("/");
     } catch (error) {
       console.error("failed to submit notification", error);
     }
@@ -324,9 +324,7 @@ const NotificationForm = () => {
                 تصاویر(حد اکثر ۴ عکس)
               </label>
               <input
-                {...register("images", {
-                  required: "حداقل یک عکس الزامی هست",
-                })}
+                {...register("images")}
                 type="file"
                 id="images"
                 multiple
@@ -363,7 +361,7 @@ const NotificationForm = () => {
                         loading="lazy"
                         src={URL.createObjectURL(file)}
                         alt={`تصویر انتخاب شده ${index + 1}`}
-                        className="w-full h-36 object-contain rounded-md border"
+                        className="w-full h-52 object-contain rounded-md border"
                       />
                       <span className="absolute top-1 right-1 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                         {1 + index}

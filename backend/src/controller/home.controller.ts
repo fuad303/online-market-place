@@ -3,16 +3,37 @@ import Notification from "../model/Notification.model";
 import User from "../model/User";
 //
 export const feedmeed = async (req: Request, res: Response) => {
-  const feed = await Notification.find().sort({ createdAt: -1 });
-  console.log("the Feedmeed has been hit");
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 15;
+  const skip = (page - 1) * limit;
 
-  if (!feed) {
-    res.status(404).json({
-      message: "اعلانی یافت نشد",
+  try {
+    const feed = await Notification.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    if (feed.length === 0) {
+      res.status(200).json({
+        feed: [],
+        message: "دیگر پستی وجود ندارد",
+      });
+      return;
+    }
+    if (!feed) {
+      res.status(404).json({
+        message: "اعلانی یافت نشد",
+      });
+      return;
+    }
+    res.status(200).json(feed);
+  } catch (error) {
+    console.log("Best regards feedmeed", error);
+
+    res.status(500).json({
+      message: "مشکلی پیش امد",
     });
-    return;
   }
-  res.status(200).json(feed);
 };
 
 //

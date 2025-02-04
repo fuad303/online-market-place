@@ -28,11 +28,14 @@ interface CredentialsDisplayProps {
 const CredentialsDisplay: React.FC<CredentialsDisplayProps> = memo(
   ({ credentials, error }) => {
     if (error) {
-      return (
-        <div className="mt-6 text-center text-sm text-red-500">
-          خطا در دریافت اطلاعات تماس. لطفاً دوباره تلاش کنید.
-        </div>
-      );
+      // Using a timeout here is unusual. Consider removing it or handling the error outside.
+      setTimeout(() => {
+        return (
+          <div className="mt-6 text-center text-sm text-red-500">
+            خطا در دریافت اطلاعات تماس. لطفاً دوباره تلاش کنید.
+          </div>
+        );
+      }, 1000);
     }
     return (
       <div className="mt-6 p-3 border border-gray-300 rounded text-center text-sm text-white bg-[#1b344e]">
@@ -110,109 +113,116 @@ const Post: React.FC = () => {
   };
 
   return (
-    <div dir="RTL" className="max-w-4xl mx-auto p-4 break-words">
-      <div className="bg-[#1b344e] p-6 rounded-xl shadow-md transition-all duration-300">
-        {/* Post Title and Description */}
-        <h1 className="text-lg font-bold text-white mb-2 border-b pb-2 border-gray-600 break-words">
-          {post.title}
-        </h1>
-        <p className="text-gray-300 text-sm mb-4 break-words">
-          {post.description}
-        </p>
+    <div dir="RTL" className="min-h-screen py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-[#1b344e] p-6 rounded-xl shadow-md transition-all duration-300">
+          {/* Post Title and Description */}
+          <h1 className="text-lg font-bold text-white mb-2 border-b pb-2 border-gray-600 break-words">
+            {post.title}
+          </h1>
+          <p className="text-gray-300 text-sm mb-4 break-words">
+            {post.description}
+          </p>
 
-        {/* Post Details */}
-        <div className="space-y-4">
-          {/* Location */}
-          <div className="flex items-center gap-2 text-sm flex-wrap">
-            <MapPin className="text-[#FFC107] w-5 h-5" />
-            <span className="text-gray-400 break-words">موقعیت:</span>
-            <span className="text-white break-words">{post.location}</span>
-          </div>
-          {/* Price */}
-          <div className="flex items-center gap-2 text-sm flex-wrap">
-            <Tag className="text-[#FFC107] w-5 h-5" />
-            <span className="text-gray-400 break-words">قیمت:</span>
-            <span className="text-white break-words">
-              {post.price.toLocaleString()} افغانی
-            </span>
-          </div>
-          {/* Category */}
-          <div className="flex items-center gap-2 text-sm flex-wrap">
-            <Folder className="text-[#FFC107] w-5 h-5" />
-            <span className="text-gray-400">دسته‌بندی:</span>
-            <span className="text-white break-all">{post.category}</span>
-          </div>
-          {/* Subcategory (Optional) */}
-          {post.subCategory && (
+          {/* Post Details */}
+          <div className="space-y-4">
+            {/* Location */}
             <div className="flex items-center gap-2 text-sm flex-wrap">
-              <Layers className="text-[#FFC107] w-5 h-5" />
-              <span className="text-gray-400 break-words">زیر دسته:</span>
-              <span className="text-white break-words">{post.subCategory}</span>
+              <MapPin className="text-[#FFC107] w-5 h-5" />
+              <span className="text-gray-400 break-words">موقعیت:</span>
+              <span className="text-white break-words">{post.location}</span>
+            </div>
+            {/* Price */}
+            <div className="flex items-center gap-2 text-sm flex-wrap">
+              <Tag className="text-[#FFC107] w-5 h-5" />
+              <span className="text-gray-400 break-words">قیمت:</span>
+              <span className="text-white break-words">
+                {post.price.toLocaleString()} افغانی
+              </span>
+            </div>
+            {/* Category */}
+            <div className="flex items-center gap-2 text-sm flex-wrap">
+              <Folder className="text-[#FFC107] w-5 h-5" />
+              <span className="text-gray-400">دسته‌بندی:</span>
+              <span className="text-white break-all">{post.category}</span>
+            </div>
+            {/* Subcategory (Optional) */}
+            {post.subCategory && (
+              <div className="flex items-center gap-2 text-sm flex-wrap">
+                <Layers className="text-[#FFC107] w-5 h-5" />
+                <span className="text-gray-400 break-words">زیر دسته:</span>
+                <span className="text-white break-words">
+                  {post.subCategory}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Images Section */}
+          {post.images && post.images.length > 0 && (
+            <div
+              className="grid gap-4 mb-6 pt-4"
+              style={{
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              }}
+            >
+              {post.images.map((image, index) => (
+                <div
+                  key={index}
+                  className="overflow-hidden rounded-md border border-gray-600"
+                >
+                  <img
+                    loading="lazy"
+                    src={`http://192.168.0.105:4000/${image}`}
+                    alt={`تصویر ${index + 1} از پست ${post.title}`}
+                    className="w-full h-52 object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
+                    onClick={() => handleImageClick(image)}
+                  />
+                </div>
+              ))}
             </div>
           )}
         </div>
-        {/* Images Section */}
-        {post.images && post.images.length > 0 && (
-          <div
-            className="grid gap-4 mb-6 pt-4"
-            style={{
-              gridAutoColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            }}
-          >
-            {post.images.map((image, index) => (
-              <div
-                key={index}
-                className="overflow-hidden rounded-md border border-gray-600"
-              >
-                <img
-                  loading="lazy"
-                  src={`http://192.168.0.105:4000/${image}`}
-                  alt={`تصویر ${index + 1} از پست ${post.title}`}
-                  className="w-full h-52 object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
-                  onClick={() => handleImageClick(image)}
+
+        {/* Image Modal */}
+        <ImageModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          imageUrl={selectedImage}
+        />
+
+        {/* User Credentials Section */}
+        <div className="mt-6 text-center">
+          {user ? (
+            <>
+              {userCredentials ? (
+                <CredentialsDisplay
+                  credentials={userCredentials}
+                  error={userError}
                 />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Image Modal */}
-      <ImageModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        imageUrl={selectedImage}
-      />
-
-      {/* User Credentials Section */}
-      {user ? (
-        <>
-          {userCredentials ? (
-            <CredentialsDisplay
-              credentials={userCredentials}
-              error={userError}
-            />
-          ) : loadingUser ? (
-            <div className="flex justify-center items-center pt-4">
-              <LittleLoading />
-            </div>
+              ) : loadingUser ? (
+                <div className="flex justify-center items-center pt-4">
+                  <LittleLoading />
+                </div>
+              ) : (
+                <button
+                  onClick={() => getUserCredentials(post.seller)}
+                  className="hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm"
+                >
+                  دیدن اطلاعات تماس
+                </button>
+              )}
+            </>
           ) : (
-            <button
-              onClick={() => getUserCredentials(post.seller)}
-              className="block mx-auto mt-6 hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm"
+            <NavLink
+              to="/login"
+              className="hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm"
             >
               دیدن اطلاعات تماس
-            </button>
+            </NavLink>
           )}
-        </>
-      ) : (
-        <NavLink
-          to="/login"
-          className="block mx-auto mt-6 hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm"
-        >
-          دیدن اطلاعات تماس
-        </NavLink>
-      )}
+        </div>
+      </div>
     </div>
   );
 };

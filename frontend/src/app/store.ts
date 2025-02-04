@@ -6,6 +6,7 @@ import userReducer from "./features/userSlice";
 import fileApi from "./api/uploadApi";
 import notificationsApi from "./api/notificationsApi";
 import feedApi from "./api/feedApi";
+import { UseDispatch } from "react-redux";
 const rootReducer = combineReducers({
   authApi: authApi.reducer,
   user: userReducer,
