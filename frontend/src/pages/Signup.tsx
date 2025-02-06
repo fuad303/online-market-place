@@ -4,6 +4,7 @@ import { useSignupMutation } from "../app/api/authApi";
 import LoadingState from "../components/LoadingState";
 import { useDispatch } from "react-redux";
 import { setUser } from "../app/features/userSlice";
+import feedApi from "../app/api/feedApi";
 
 interface FormField {
   username: string;
@@ -29,6 +30,8 @@ const Signup = () => {
       const res = await signup(data).unwrap();
       reset();
       dispatch(setUser(res));
+      dispatch(feedApi.util.resetApiState());
+
       navigate("/");
     } catch (err: any) {
       console.error("Signup failed: ", err);
@@ -127,12 +130,7 @@ const Signup = () => {
           <input
             {...register("password", {
               required: "رمز عبور ضروری هست",
-              minLength: { value: 6, message: "حداقل ۶ حرف انگلیسی باشد" },
-              pattern: {
-                value: /^(?=.*[A-Z])(?=.*[0-9])/,
-                message:
-                  "باید انگلیسی باشد و یک حرف بزرگ داشته باشد همراه با یک عدد",
-              },
+              minLength: { value: 4, message: "حداقل 4  مشخصه باشد" },
             })}
             type="password"
             id="password"

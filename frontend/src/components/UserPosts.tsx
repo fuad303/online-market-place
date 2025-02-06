@@ -45,11 +45,16 @@ const UserPosts = () => {
   };
 
   const handlePostDelete = async (id: string) => {
-    try {
-      await deleteAPost(id).unwrap();
-      refetch();
-    } catch (error) {
-      alert(error);
+    const confirmation = window.confirm();
+    if (confirmation) {
+      try {
+        await deleteAPost(id).unwrap();
+        refetch();
+      } catch (error) {
+        alert(error);
+      }
+    } else {
+      return;
     }
   };
 
@@ -80,7 +85,9 @@ const UserPosts = () => {
       </h1>
 
       <div
-        className={`grid gap-6 ${data?.length === 1 ? "items-center" : ""}`}
+        className={`grid gap-6 -m-5 pt-4${
+          data?.length === 1 ? "items-center" : ""
+        }`}
         style={{ gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))" }}
       >
         {data?.map((post) => {

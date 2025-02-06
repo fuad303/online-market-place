@@ -1,8 +1,9 @@
-// Home.tsx
 import { motion } from "framer-motion";
 import LoadingState from "../components/LoadingState";
 import LittleLoading from "../components/LittleLoading";
 import { Folder, Layers, MapPin, Tag } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { faIR } from "date-fns/locale";
 import feedApi, {
   FeedNotificationsInterface,
   useGetLatestNotificationsQuery,
@@ -39,7 +40,6 @@ const Home: React.FC = () => {
       refetchOnFocus: true,
     }
   ) as { data?: FeedResponse; isLoading: boolean; isFetching: boolean };
-  console.log(posts);
 
   useEffect(() => {
     if (posts) {
@@ -77,16 +77,16 @@ const Home: React.FC = () => {
   if (isLoading && page === 1) return <LoadingState />;
 
   return (
-    <div dir="RTL" className="grid gap-4">
+    <div dir="RTL">
       <div
-        className="grid gap-4"
-        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))" }}
+        className="grid gap-4 -m-5"
+        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
       >
         {allPosts.map((post) => (
-          <NavLink to={`/post/${post._id}`} key={post._id}>
-            <motion.div className="bg-[#1b344e] p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
+          <NavLink to={`/post/${encodeURIComponent(post._id)}`} key={post._id}>
+            <motion.div className="bg-[#1b344e] p-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
               {post.images.length > 0 && (
-                <div className="mt-4 relative w-full h-72 rounded-md border border-gray-600 overflow-hidden transition-transform duration-200 hover:scale-105">
+                <div className="mt-4 relative w-full h-48 rounded-md border border-gray-600 overflow-hidden transition-transform duration-200 hover:scale-105">
                   <img
                     loading="lazy"
                     src={`http://192.168.0.105:4000/${post.images[0]}`}
@@ -137,13 +137,21 @@ const Home: React.FC = () => {
                   )}
                 </div>
               </div>
+              {post.createdAt && (
+                <div className="text-gray-300 pt-3">
+                  {formatDistanceToNow(new Date(post.createdAt), {
+                    addSuffix: true,
+                    locale: faIR,
+                  })}
+                </div>
+              )}
             </motion.div>
           </NavLink>
         ))}
       </div>
 
       {noMorePosts && (
-        <div className="flex flex-col items-center pb-5 text-gray-500">
+        <div className="flex flex-col items-center pb-5 text-gray-500 pt-8">
           <p>دیگر پستی وجود ندارد.</p>
           <button
             onClick={() => {
@@ -164,7 +172,7 @@ const Home: React.FC = () => {
       )}
 
       {isFetching && !noMorePosts && (
-        <div className="flex justify-center items-center pb-5">
+        <div className="flex pt-4 justify-center items-center pb-5">
           <LittleLoading />
         </div>
       )}

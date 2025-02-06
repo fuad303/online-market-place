@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
+import TheUserPostsinPostPage from "../components/TheUserPostsinPostPage";
 
 export interface UserCredentials {
   username: string;
@@ -28,17 +29,14 @@ interface CredentialsDisplayProps {
 const CredentialsDisplay: React.FC<CredentialsDisplayProps> = memo(
   ({ credentials, error }) => {
     if (error) {
-      // Using a timeout here is unusual. Consider removing it or handling the error outside.
-      setTimeout(() => {
-        return (
-          <div className="mt-6 text-center text-sm text-red-500">
-            خطا در دریافت اطلاعات تماس. لطفاً دوباره تلاش کنید.
-          </div>
-        );
-      }, 1000);
+      return (
+        <div className="mt-6 text-center text-sm text-red-500">
+          خطا در دریافت اطلاعات تماس. لطفاً دوباره تلاش کنید.
+        </div>
+      );
     }
     return (
-      <div className="mt-6 p-3 border border-gray-300 rounded text-center text-sm text-white bg-[#1b344e]">
+      <div className="mt-6 p-4 border border-gray-300 rounded bg-[#1b344e] text-center text-sm text-white">
         <div>
           ایمیل:{" "}
           <a
@@ -50,7 +48,7 @@ const CredentialsDisplay: React.FC<CredentialsDisplayProps> = memo(
             {credentials.email}
           </a>
         </div>
-        <div>
+        <div className="mt-2">
           تلفن:{" "}
           <a
             href={`tel:+93${credentials.phone}`}
@@ -76,9 +74,9 @@ const Post: React.FC = () => {
         dir="RTL"
         className="flex flex-col items-center justify-center min-h-screen bg-[#1b344e] p-4"
       >
-        <h1 className="text-white text-xl break-words">مشکلی پیش آمد</h1>
+        <h1 className="text-white text-xl">مشکلی پیش آمد</h1>
         <a
-          className="text-blue-500 underline mt-4 break-words"
+          className="text-blue-500 underline mt-4"
           href="https://t.me/fuad203"
           target="_blank"
           rel="noopener noreferrer"
@@ -89,7 +87,9 @@ const Post: React.FC = () => {
     );
   }
 
-  const { data: post, isLoading, error } = useGetAPostQuery(id);
+  const { data, isLoading, error } = useGetAPostQuery(id);
+  const post = data?.aPost;
+  const userPosts = data?.userPosts;
   const [
     getUserCredentials,
     { data: userCredentials, isLoading: loadingUser, error: userError },
@@ -98,12 +98,14 @@ const Post: React.FC = () => {
   if (isLoading) return <LoadingState />;
   if (error)
     return (
-      <h1
+      <div
         dir="RTL"
-        className="text-white text-xl text-center mt-8 bg-[#1b344e] p-4 rounded-xl break-words"
+        className="flex items-center justify-center min-h-screen bg-[#1b344e] p-4"
       >
-        مشکلی پیش آمد
-      </h1>
+        <h1 className="text-white text-xl bg-[#1b344e] p-4 rounded-xl">
+          مشکلی پیش آمد
+        </h1>
+      </div>
     );
   if (!post) return null;
 
@@ -113,47 +115,40 @@ const Post: React.FC = () => {
   };
 
   return (
-    <div dir="RTL" className="min-h-screen py-8 px-4">
+    <div dir="RTL" className="min-h-screen py-8 px-4 ">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-[#1b344e] p-6 rounded-xl shadow-md transition-all duration-300">
-          {/* Post Title and Description */}
-          <h1 className="text-lg font-bold text-white mb-2 border-b pb-2 border-gray-600 break-words">
+        <div className="bg-[#1b344e] p-4 -m-9 rounded-xl shadow-lg transition-all duration-300 ">
+          {/* Post Title */}
+          <h1 className="text-2xl font-bold text-white mb-3 border-b pb-2">
             {post.title}
           </h1>
-          <p className="text-gray-300 text-sm mb-4 break-words">
-            {post.description}
-          </p>
+          {/* Post Description */}
+          <p className="text-gray-300 text-base mb-4">{post.description}</p>
 
           {/* Post Details */}
-          <div className="space-y-4">
-            {/* Location */}
-            <div className="flex items-center gap-2 text-sm flex-wrap">
+          <div className="space-y-3 mb-4">
+            <div className="flex items-center gap-2 text-sm">
               <MapPin className="text-[#FFC107] w-5 h-5" />
-              <span className="text-gray-400 break-words">موقعیت:</span>
-              <span className="text-white break-words">{post.location}</span>
+              <span className="text-gray-400">موقعیت:</span>
+              <span className="text-white">{post.location}</span>
             </div>
-            {/* Price */}
-            <div className="flex items-center gap-2 text-sm flex-wrap">
+            <div className="flex items-center gap-2 text-sm">
               <Tag className="text-[#FFC107] w-5 h-5" />
-              <span className="text-gray-400 break-words">قیمت:</span>
-              <span className="text-white break-words">
+              <span className="text-gray-400">قیمت:</span>
+              <span className="text-white">
                 {post.price.toLocaleString()} افغانی
               </span>
             </div>
-            {/* Category */}
-            <div className="flex items-center gap-2 text-sm flex-wrap">
+            <div className="flex items-center gap-2 text-sm">
               <Folder className="text-[#FFC107] w-5 h-5" />
               <span className="text-gray-400">دسته‌بندی:</span>
-              <span className="text-white break-all">{post.category}</span>
+              <span className="text-white">{post.category}</span>
             </div>
-            {/* Subcategory (Optional) */}
             {post.subCategory && (
-              <div className="flex items-center gap-2 text-sm flex-wrap">
+              <div className="flex items-center gap-2 text-sm">
                 <Layers className="text-[#FFC107] w-5 h-5" />
-                <span className="text-gray-400 break-words">زیر دسته:</span>
-                <span className="text-white break-words">
-                  {post.subCategory}
-                </span>
+                <span className="text-gray-400">زیر دسته:</span>
+                <span className="text-white">{post.subCategory}</span>
               </div>
             )}
           </div>
@@ -161,26 +156,56 @@ const Post: React.FC = () => {
           {/* Images Section */}
           {post.images && post.images.length > 0 && (
             <div
-              className="grid gap-4 mb-6 pt-4"
+              className="grid gap-4 mb-6"
               style={{
                 gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
               }}
             >
               {post.images.map((image, index) => (
                 <div
-                  key={index}
-                  className="overflow-hidden rounded-md border border-gray-600"
+                  className="mt-4 relative w-full h-48 rounded-md border border-gray-600 overflow-hidden transition-transform duration-200 hover:scale-105"
+                  onClick={() => handleImageClick(image)}
                 >
                   <img
                     loading="lazy"
                     src={`http://192.168.0.105:4000/${image}`}
-                    alt={`تصویر ${index + 1} از پست ${post.title}`}
-                    className="w-full h-52 object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
-                    onClick={() => handleImageClick(image)}
+                    alt="Post"
+                    className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+                  />
+                  <img
+                    loading="lazy"
+                    src={`http://192.168.0.105:4000/${image}`}
+                    alt="Post"
+                    className="absolute inset-0 m-auto max-w-full max-h-full object-contain"
                   />
                 </div>
+
+                // <div
+                //   key={index}
+                //   className="overflow-hidden rounded-md border border-gray-600"
+                // >
+                //   <img
+                //     loading="lazy"
+                //     src={`http://192.168.0.105:4000/${image}`}
+                //     alt={`تصویر ${index + 1} از پست ${post.title}`}
+                //     className="w-full h-52 object-cover ] cursor-pointer transition-transform duration-200 hover:scale-105"
+                //     onClick={() => handleImageClick(image)}
+                //   />
+                // </div>
               ))}
             </div>
+          )}
+        </div>
+
+        {/* User's Other Posts */}
+        <div className="mt-10">
+          <h2 className="text-gray-300 text-xl font-semibold mb-4">
+            تمام اعلانات این کاربر
+          </h2>
+          {userPosts && userPosts.length > 0 ? (
+            <TheUserPostsinPostPage userPosts={userPosts} />
+          ) : (
+            <p className="text-gray-500">هیچ آگهی دیگری موجود نیست.</p>
           )}
         </div>
 
@@ -192,9 +217,9 @@ const Post: React.FC = () => {
         />
 
         {/* User Credentials Section */}
-        <div className="mt-6 text-center">
+        <div className="mt-8 text-center">
           {user ? (
-            <>
+            <div className="pt-4">
               {userCredentials ? (
                 <CredentialsDisplay
                   credentials={userCredentials}
@@ -212,14 +237,16 @@ const Post: React.FC = () => {
                   دیدن اطلاعات تماس
                 </button>
               )}
-            </>
+            </div>
           ) : (
-            <NavLink
-              to="/login"
-              className="hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm"
-            >
-              دیدن اطلاعات تماس
-            </NavLink>
+            <div className="pt-4">
+              <NavLink
+                to="/login"
+                className="hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm "
+              >
+                دیدن اطلاعات تماس
+              </NavLink>
+            </div>
           )}
         </div>
       </div>

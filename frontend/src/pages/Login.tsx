@@ -4,6 +4,7 @@ import { useLoginMutation } from "../app/api/authApi";
 import LoadingState from "../components/LoadingState";
 import { useDispatch } from "react-redux";
 import { setUser } from "../app/features/userSlice";
+import feedApi from "../app/api/feedApi";
 
 interface FormField {
   username: string;
@@ -18,12 +19,12 @@ const Login = () => {
 
   const onSubmit = async (data: FormField) => {
     try {
-      console.log("We entered the onsubmit");
-
       const res = await login(data).unwrap();
 
       dispatch(setUser(res));
       reset();
+      dispatch(feedApi.util.resetApiState());
+
       navigate("/");
     } catch (err: any) {
       console.error("Failed to login", error);

@@ -142,6 +142,7 @@ export const notificationUploadMiddleware = notificationUpload.array(
   "images",
   4
 );
+console.log();
 
 export const newNotification = async (req: Request, res: Response) => {
   const userId = req.userId;

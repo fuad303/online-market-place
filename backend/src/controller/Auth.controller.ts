@@ -22,14 +22,8 @@ export const validateSignup = [
   check("username").notEmpty().withMessage("username is required"),
   check("email").isEmail().withMessage("use a valid email"),
   check("password")
-    .isLength({ min: 6 })
-    .withMessage("password must be at least 6 characters")
-    .matches(/[A-Z]/)
-    .withMessage("Must contain an uppercase letter")
-    .matches(/[0-9]/)
-    .withMessage("Must contain at least one number")
-    .matches(/[!@#$%^&*]/)
-    .withMessage("Must have at least one symbol"),
+    .isLength({ min: 4 })
+    .withMessage("password must be at least 4 characters"),
   check("phone")
     .matches(/^7[0-9]{8}$/)
     .withMessage(

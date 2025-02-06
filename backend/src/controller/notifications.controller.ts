@@ -116,14 +116,38 @@ export const search = async (req: Request, res: Response) => {
     });
     return;
   }
+
+  let searchTerm = query;
+
+  switch (true) {
+    case ["موبایل", "مبایل", "گوشی", "تلیفون", "تیلیفون"].includes(searchTerm):
+      searchTerm = "موبایل";
+      break;
+
+    case ["لب تاپ", "لپ تاپ", "کامپیوتر", "کمپیوتر", "لبتاپ", "لپتاپ"].includes(
+      searchTerm
+    ):
+      searchTerm = "لب تاپ";
+      break;
+
+    case ["دکان", "دیکون"].includes(searchTerm):
+      searchTerm = "دکان";
+      break;
+
+    case ["خونه", "خانه"].includes(searchTerm):
+      searchTerm = "خانه";
+      break;
+  }
+
   try {
-    const regex = new RegExp(query, "i");
+    const regex = new RegExp(searchTerm, "i");
     const result = await Notification.find({
       $or: [
         { title: { $regex: regex } },
         { description: { $regex: regex } },
         { location: { $regex: regex } },
         { category: { $regex: regex } },
+        { subCategory: { $regex: regex } },
       ],
     });
 

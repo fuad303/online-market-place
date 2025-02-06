@@ -12,6 +12,11 @@ export interface FeedNotificationsInterface {
   seller: string;
   createdAt?: Date;
 }
+//
+interface GetUserPostsResponse {
+  aPost: NotificationsInterface;
+  userPosts: NotificationsInterface[];
+}
 
 interface UserCredentials {
   username: string;
@@ -35,7 +40,7 @@ const feedApi = createApi({
         method: "GET",
       }),
     }),
-    getAPost: builder.query<NotificationsInterface, string>({
+    getAPost: builder.query<GetUserPostsResponse, string>({
       query: (id: string) => ({
         url: `getAPost/${id}`,
         method: "GET",

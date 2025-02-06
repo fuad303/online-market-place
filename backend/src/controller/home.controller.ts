@@ -33,8 +33,6 @@ export const feedmeed = async (req: Request, res: Response) => {
       images: notification.images.length > 0 ? [notification.images[0]] : [],
     }));
 
-    console.log(modifiedFeed);
-
     res.status(200).json(modifiedFeed);
   } catch (error) {
     console.log("Best regards feedmeed", error);
@@ -46,15 +44,27 @@ export const feedmeed = async (req: Request, res: Response) => {
 };
 
 //
-
 export const getAPost = async (req: Request, res: Response) => {
   try {
     const aPost = await Notification.findById(req.params.id);
+
     if (!aPost) {
       res.status(404).json({ message: "پست یافت نشد" });
       return;
     }
-    res.status(200).json(aPost);
+    const seller = aPost.seller.toString();
+
+    const userPosts = await Notification.find({ seller: seller }).lean();
+
+    const modifiedUserPosts = userPosts.map((notification) => ({
+      ...notification,
+      images: notification.images.length > 0 ? [notification.images[0]] : [],
+    }));
+
+    res.status(200).json({
+      aPost: aPost,
+      userPosts: modifiedUserPosts,
+    });
   } catch (error) {
     console.warn("Best regards from: getAPost", error);
   }
