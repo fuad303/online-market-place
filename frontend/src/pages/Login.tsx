@@ -34,21 +34,21 @@ const Login = () => {
     return <LoadingState />;
   }
   return (
-    <div className="sm:pt-0 md:pt-3 flex items-center justify-center ">
+    <div className="sm:pt-0 md:pt-3 flex items-center justify-center">
       <form
-        className="bg-transparent border-[0.5px] border-gray-200 shadow-lg rounded-lg m-2 p-7 w-[25rem]"
+        className="bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 bg-gray-900 border border-gray-700 shadow-lg rounded-lg m-2 p-7 w-[25rem] text-white"
         onSubmit={handleSubmit(onSubmit)}
       >
         {error ? (
-          <h1 className="text-2xl font-bold text-red-600 mb-6 text-center">
+          <h1 className="text-2xl font-bold text-red-500 mb-6 text-center">
             {(error as any)?.data?.message || "مشکلی پیش آمد"}
           </h1>
         ) : (
-          <h1 className="text-2xl font-bold  mb-6 text-center">ورود</h1>
+          <h1 className="text-2xl font-bold mb-6 text-center">ورود</h1>
         )}
 
         <div className="mb-4 text-right">
-          <label htmlFor="username" className="block  font-medium">
+          <label htmlFor="username" className="block font-medium text-gray-300">
             نام کاربری
           </label>
           <input
@@ -58,12 +58,15 @@ const Login = () => {
             defaultValue="fuad"
             type="username"
             id="username"
-            className="w-full text-right border border-gray-200 bg-transparent  rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="w-full text-right border border-gray-600 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
         </div>
 
         <div className="mb-6">
-          <label htmlFor="password" className="block text-right  font-medium">
+          <label
+            htmlFor="password"
+            className="block text-right font-medium text-gray-300"
+          >
             رمز عبور
           </label>
           <input
@@ -73,20 +76,20 @@ const Login = () => {
             defaultValue="Fuad4688@@"
             type="password"
             id="password"
-            className="w-full bg-transparent text-right border border-gray-300 rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="w-full bg-transparent text-right border border-gray-600 rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
         </div>
         <button
           disabled={isLoading}
           type="submit"
-          className="w-full bg-[#26394c] text-white py-2 px-4 rounded-md hover:bg-[#2c4257] transition duration-200"
+          className="w-full bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition duration-200"
         >
           {isLoading ? "بارگیری..." : "ورود"}
         </button>
 
-        <p className="translate-y-3 text-right">
+        <p className="translate-y-3 text-right text-gray-300">
           حساب ندارید؟
-          <NavLink className={`text-blue-400 text-right`} to="/signup">
+          <NavLink className="text-blue-400 text-right" to="/signup">
             ثبت نام{" "}
           </NavLink>
         </p>

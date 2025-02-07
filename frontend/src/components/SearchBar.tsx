@@ -37,7 +37,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
       ) : (
         <form
           onSubmit={handleSubmit(submit)}
-          className="flex items-center w-full bg-[#1b2b3c] rounded-full overflow-hidden border border-[#2c3f50] focus-within:ring-2 focus-within:ring-[#3c5060] transition-all duration-300"
+          className="flex items-center w-full bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 bg-gray-800 border border-gray-700 rounded-full overflow-hidden focus-within:ring-2 focus-within:ring-gray-600 transition-all duration-300"
         >
           <input
             id="search"
@@ -51,14 +51,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
             <button
               type="button"
               onClick={onClose}
-              className="p-2 bg-red-500 text-white rounded-r-full"
+              className="p-2 bg-red-500 text-white rounded-r-full hover:bg-red-600 transition-colors duration-200"
             >
               <X />
             </button>
           ) : (
             <button
               type="submit"
-              className="p-2 bg-[#2c3f50] hover:bg-[#3c5060] rounded-r-full"
+              className="p-2 bg-gray-700 hover:bg-gray-600 rounded-r-full transition-colors duration-200"
             >
               <Search className="text-white" />
             </button>

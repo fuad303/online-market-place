@@ -131,24 +131,25 @@ const NotificationForm = () => {
   return (
     <>
       <div
-        className="sm:pt-0 md:pt-3 flex items-center justify-center"
-        dir="rtl"
+        dir="RTL"
+        className="sm:pt-0 md:pt-3 flex items-center justify-center "
       >
         <form
-          className="bg-transparent border-[0.5px] flex-2 border-gray-200 shadow-lg rounded-lg m-2 p-7 w-full sm:w-[25rem] lg:w-[40rem] xl:w-[45rem]"
           onSubmit={handleSubmit(onSubmit)}
+          className="bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 bg-gray-900 border border-gray-700 shadow-lg rounded-lg m-2 p-7 w-full sm:w-[25rem] lg:w-[40rem] xl:w-[45rem] text-white"
         >
           {error ? (
-            <h1 className="text-2xl font-bold text-red-600 mb-8 text-center">
+            <h1 className="text-2xl font-bold text-red-500 mb-8 text-center">
               {(error as any)?.data?.message || "مشکلی پیش آمد"}
             </h1>
           ) : (
             <h1 className="text-2xl font-bold mb-8 text-center">ثبت اعلان</h1>
           )}
-
           {/* Category Selection */}
           <div className="mb-4 text-right">
-            <label className="block font-medium text-lg mb-1">نوع کالا</label>
+            <label className="block font-medium text-lg mb-1 text-gray-300">
+              نوع کالا
+            </label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 grid-auto-rows[minmax(150px, auto)]">
               {[
                 { value: "موبایل", label: "موبایل", icon: phone },
@@ -161,10 +162,10 @@ const NotificationForm = () => {
               ].map(({ value, label, icon }) => (
                 <label
                   key={value}
-                  className={`flex items-center p-3 space-x-4 cursor-pointer rounded-md border border-gray-300 transition-all duration-300 ease-in-out ${
+                  className={`flex items-center p-3 space-x-4 cursor-pointer rounded-md border border-gray-600 transition-all duration-300 ease-in-out ${
                     category === value
-                      ? "bg-[#0b1b2c] text-white"
-                      : "bg-transparent hover:bg-[#0b1b2c] hover:text-white"
+                      ? "bg-gray-700 text-white"
+                      : "bg-transparent hover:bg-gray-700 hover:text-white"
                   } w-full`}
                 >
                   <input
@@ -190,21 +191,20 @@ const NotificationForm = () => {
               </span>
             )}
           </div>
-
           {/* Sub-category for House and Shop */}
           {(category === "خانه" || category === "دکان") && (
             <div className="mb-4 text-right">
-              <label className="block font-medium">
+              <label className="block font-medium text-gray-300">
                 نوع {category === "خانه" ? "خانه" : "دکان"}
               </label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {["کرایه", "فروش", "گروی"].map((subItem) => (
                   <label
                     key={subItem}
-                    className={`flex items-center p-3 space-x-4 cursor-pointer rounded-md border border-gray-300 transition-all duration-300 ease-in-out ${
+                    className={`flex items-center p-3 space-x-4 cursor-pointer rounded-md border border-gray-600 transition-all duration-300 ease-in-out ${
                       watch("subCategory") === subItem
-                        ? "bg-[#0b1b2c] text-white"
-                        : "bg-transparent hover:bg-[#0b1b2c] hover:text-white"
+                        ? "bg-gray-700 text-white"
+                        : "bg-transparent hover:bg-gray-700 hover:text-white"
                     }`}
                   >
                     <input
@@ -225,13 +225,12 @@ const NotificationForm = () => {
               )}
             </div>
           )}
-
           {/* Input for "Others" category */}
           {category === "دیگر" && (
             <div className="mb-4 text-right">
               <label
                 htmlFor="otherCategory"
-                className="block font-medium text-lg mb-1"
+                className="block font-medium text-lg mb-1 text-gray-300"
               >
                 نوع دیگر
               </label>
@@ -243,7 +242,7 @@ const NotificationForm = () => {
                 onChange={(e) => {
                   setOtherCategories(e.target.value);
                 }}
-                className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                className="w-full text-right border border-gray-600 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
               />
               {errors.category && (
                 <span className="text-red-500 text-sm">
@@ -252,17 +251,16 @@ const NotificationForm = () => {
               )}
             </div>
           )}
-
           {/* Title Input */}
           <div className="mb-4 text-right">
-            <label htmlFor="title" className="block font-medium">
+            <label htmlFor="title" className="block font-medium text-gray-300">
               عنوان
             </label>
             <input
               {...register("title", { required: "عنوان الزامی است" })}
               type="text"
               id="title"
-              className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="w-full text-right border border-gray-600 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             {errors.title && (
               <span className="text-red-500 text-sm">
@@ -270,30 +268,31 @@ const NotificationForm = () => {
               </span>
             )}
           </div>
-
           {/* Description Input */}
           <div className="mb-4 text-right">
-            <label htmlFor="description" className="block font-medium">
+            <label
+              htmlFor="description"
+              className="block font-medium text-gray-300"
+            >
               توضیحات
             </label>
             <textarea
               {...register("description")}
               id="description"
               rows={4}
-              className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200 "
+              className="w-full text-right border border-gray-600 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500 "
             />
           </div>
-
           {/* Price Input */}
           <div className="mb-4 text-right">
-            <label htmlFor="price" className="block font-medium">
+            <label htmlFor="price" className="block font-medium text-gray-300">
               قیمت
             </label>
             <input
               {...register("price", { required: "قیمت الزامی است" })}
               type="number"
               id="price"
-              className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="w-full text-right border border-gray-600 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             {errors.price && (
               <span className="text-red-500 text-sm">
@@ -301,17 +300,19 @@ const NotificationForm = () => {
               </span>
             )}
           </div>
-
           {/* Location Input */}
           <div className="mb-4 text-right">
-            <label htmlFor="location" className="block font-medium">
+            <label
+              htmlFor="location"
+              className="block font-medium text-gray-300"
+            >
               مکان
             </label>
             <input
               {...register("location", { required: "مکان الزامی است" })}
               type="text"
               id="location"
-              className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="w-full text-right border border-gray-600 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             {errors.location && (
               <span className="text-red-500 text-sm">
@@ -319,10 +320,9 @@ const NotificationForm = () => {
               </span>
             )}
           </div>
-
           {/* Images Input */}
           <div className="mb-4 text-right">
-            <label htmlFor="images" className="block font-medium">
+            <label htmlFor="images" className="block font-medium text-gray-300">
               تصاویر(حد اکثر ۴ عکس)
             </label>
             <input
@@ -333,7 +333,7 @@ const NotificationForm = () => {
               id="images"
               multiple
               accept="image/*"
-              className="w-full text-right border border-gray-300 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="w-full text-right border border-gray-600 bg-transparent rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
               onChange={handelFileChange}
             />
             {errors.images && (
@@ -341,7 +341,7 @@ const NotificationForm = () => {
                 {errors.images.message}
               </span>
             )}
-            <p className="text-sm mt-2 grid">
+            <p className="text-sm mt-2 grid text-gray-300">
               {fileCount > 0 ? (
                 <>
                   <span>تعداد تصاویر انتخاب‌شده: {fileCount}</span>
@@ -350,7 +350,9 @@ const NotificationForm = () => {
                 <></>
               )}
             </p>
-
+            <h1 className="text-red-500">
+              تصویر اول در کارت اعلان استفاده میشود
+            </h1>{" "}
             {isCompressing && (
               <h1 className="text-red-500 font-bold text-xl">
                 در حال فشرده‌سازی عکس ها ...
@@ -365,7 +367,7 @@ const NotificationForm = () => {
                       loading="lazy"
                       src={URL.createObjectURL(file)}
                       alt={`تصویر انتخاب شده ${index + 1}`}
-                      className="w-full h-52 object-contain rounded-md border"
+                      className="w-full h-52 object-contain rounded-md border border-gray-600"
                     />
                     <span className="absolute top-1 right-1 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                       {1 + index}
@@ -375,11 +377,10 @@ const NotificationForm = () => {
               </div>
             )}
           </div>
-
           <button
             disabled={isCompressing}
             type="submit"
-            className="w-full bg-[#26394c] text-white py-2 px-4 rounded-md hover:bg-[#2c4257] transition duration-200"
+            className="w-full bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition duration-200"
           >
             ثبت
           </button>

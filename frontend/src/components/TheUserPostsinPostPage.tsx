@@ -23,15 +23,16 @@ const TheUserPostsinPostPage: React.FC<UserPostsProps> = ({ userPosts }) => {
         <NavLink
           to={`/post/${encodeURIComponent(post._id)}`}
           key={post._id}
-          className="rounded-lg shadow-md overflow-hidden transform transition-all duration-200 hover:scale-105 hover:shadow-xl"
+          className="rounded-lg shadow-md overflow-hidden transform transition-all duration-200 hover:scale-105 hover:shadow-xl border border-gray-600"
         >
-          <div className="w-full h-48 overflow-hidden">
+          <div className="w-full h-48 overflow-hidden bg-gray-800">
             <img
               src={`http://192.168.0.105:4000/${post.images}`}
               alt={`تصویر پست ${post.title}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
           </div>
+
           <div className="p-4">
             <h3 className="text-gray-300 font-semibold text-lg break-words line-clamp-1">
               {post.title}

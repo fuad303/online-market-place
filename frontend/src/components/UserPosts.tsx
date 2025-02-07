@@ -79,8 +79,11 @@ const UserPosts = () => {
   const DESCRIPTION_THRESHOLD = 150;
 
   return (
-    <div className="p-4 shadow-xl rounded-lg" dir="RTL">
-      <h1 className="text-right font-sans font-bold text-2xl mb-6 border-b-2 pb-3 border-gray-300">
+    <div
+      className="p-10 shadow-xl rounded-lg bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700"
+      dir="RTL"
+    >
+      <h1 className="text-right font-sans font-bold text-2xl mb-6 border-b-2 pb-3 border-gray-600 text-white">
         پست‌های شما
       </h1>
 
@@ -88,7 +91,7 @@ const UserPosts = () => {
         className={`grid gap-6 -m-5 pt-4${
           data?.length === 1 ? "items-center" : ""
         }`}
-        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))" }}
+        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(285px, 1fr))" }}
       >
         {data?.map((post) => {
           const isTitleLong = post.title.length > TITLE_THRESHOLD;
@@ -99,7 +102,7 @@ const UserPosts = () => {
           return (
             <div
               key={post._id}
-              className={`bg-[#1b344e] p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between ${
+              className={`bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between ${
                 data?.length === 1 ? "max-w-sm" : ""
               }`}
             >
@@ -107,7 +110,7 @@ const UserPosts = () => {
                 {/* Post Title (with line-clamp if long) */}
                 <h1
                   className={`text-lg font-bold text-white mb-2 border-b pb-2 border-gray-600 break-words ${
-                    isTitleLong ? "line-clamp-3" : ""
+                    isTitleLong ? "line-clamp-2" : ""
                   }`}
                 >
                   {post.title}
@@ -116,7 +119,7 @@ const UserPosts = () => {
                 {/* Post Description (with line-clamp if long) */}
                 <p
                   className={`text-gray-300 text-sm mb-4 break-words ${
-                    isDescriptionLong ? "line-clamp-3" : ""
+                    isDescriptionLong ? "line-clamp-2" : ""
                   }`}
                 >
                   {post.description}
@@ -135,13 +138,13 @@ const UserPosts = () => {
                 <div className="space-y-2">
                   {/* Location */}
                   <div className="flex items-center gap-2 text-sm">
-                    <MapPin className="text-[#FFC107] w-5 h-5 shrink-0" />
+                    <MapPin className="text-cyan-400 w-5 h-5 shrink-0" />
                     <span className="text-gray-400">موقعیت:</span>
                     <span className="text-white">{post.location}</span>
                   </div>
                   {/* Price */}
                   <div className="flex items-center gap-2 text-sm">
-                    <Tag className="text-[#FFC107] w-5 h-5 shrink-0" />
+                    <Tag className="text-lime-400 w-5 h-5 shrink-0" />
                     <span className="text-gray-400">قیمت:</span>
                     <span className="text-white">
                       {post.price.toLocaleString()} افغانی
@@ -149,14 +152,14 @@ const UserPosts = () => {
                   </div>
                   {/* Category */}
                   <div className="flex items-center gap-2 text-sm">
-                    <Folder className="text-[#FFC107] w-5 h-5 shrink-0" />
+                    <Folder className="text-fuchsia-400 w-5 h-5 shrink-0" />
                     <span className="text-gray-400">دسته‌بندی:</span>
                     <span className="text-white">{post.category}</span>
                   </div>
                   {/* Subcategory (Optional) */}
                   {post.subCategory && (
                     <div className="flex items-center gap-2 text-sm">
-                      <Layers className="text-[#FFC107] w-5 h-5 shrink-0" />
+                      <Layers className="text-orange-400 w-5 h-5 shrink-0" />
                       <span className="text-gray-400">زیر دسته:</span>
                       <span className="text-white">{post.subCategory}</span>
                     </div>
@@ -208,7 +211,7 @@ const UserPosts = () => {
         isOpen={isPostModalOpen}
         onRequestClose={closePostModal}
         contentLabel="Post Details"
-        className="bg-[#1b344e] rounded-xl max-w-4xl w-full md:w-[90%] lg:w-[80%] mx-auto mt-12 p-4 text-white shadow-lg relative"
+        className="bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 rounded-xl max-w-4xl w-full md:w-[90%] lg:w-[80%] mx-auto mt-12 p-4 text-white shadow-lg relative"
         overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-3"
       >
         {selectedPost && (

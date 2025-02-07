@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
 import React, { useState, memo } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import {
@@ -8,8 +10,6 @@ import LoadingState from "../components/LoadingState";
 import LittleLoading from "../components/LittleLoading";
 import { MapPin, Tag, Folder, Layers } from "lucide-react";
 import ImageModal from "../components/ImageModel";
-import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import TheUserPostsinPostPage from "../components/TheUserPostsinPostPage";
@@ -36,14 +36,14 @@ const CredentialsDisplay: React.FC<CredentialsDisplayProps> = memo(
       );
     }
     return (
-      <div className="mt-6 p-4 border border-gray-300 rounded bg-[#1b344e] text-center text-sm text-white">
+      <div className="mt-6 p-4 border border-gray-700 rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 bg-gray-800 text-center text-sm text-white">
         <div>
           ایمیل:{" "}
           <a
             href={`mailto:${credentials.email}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-400 underline"
+            className="text-blue-400 underline hover:text-blue-300 transition-colors duration-200"
           >
             {credentials.email}
           </a>
@@ -52,7 +52,7 @@ const CredentialsDisplay: React.FC<CredentialsDisplayProps> = memo(
           تلفن:{" "}
           <a
             href={`tel:+93${credentials.phone}`}
-            className="text-blue-400 underline"
+            className="text-blue-400 underline hover:text-blue-300 transition-colors duration-200"
           >
             +93{credentials.phone}
           </a>
@@ -72,11 +72,11 @@ const Post: React.FC = () => {
     return (
       <div
         dir="RTL"
-        className="flex flex-col items-center justify-center min-h-screen bg-[#1b344e] p-4"
+        className="flex flex-col items-center justify-center min-h-screen p-4"
       >
         <h1 className="text-white text-xl">مشکلی پیش آمد</h1>
         <a
-          className="text-blue-500 underline mt-4"
+          className="text-blue-500 underline mt-4 hover:text-blue-300 transition-colors duration-200"
           href="https://t.me/fuad203"
           target="_blank"
           rel="noopener noreferrer"
@@ -100,11 +100,9 @@ const Post: React.FC = () => {
     return (
       <div
         dir="RTL"
-        className="flex items-center justify-center min-h-screen bg-[#1b344e] p-4"
+        className="flex items-center justify-center min-h-screen p-4"
       >
-        <h1 className="text-white text-xl bg-[#1b344e] p-4 rounded-xl">
-          مشکلی پیش آمد
-        </h1>
+        <h1 className="text-white text-xl p-4 rounded-xl">مشکلی پیش آمد</h1>
       </div>
     );
   if (!post) return null;
@@ -115,39 +113,42 @@ const Post: React.FC = () => {
   };
 
   return (
-    <div dir="RTL" className="min-h-screen py-8 px-4 ">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-[#1b344e] p-4 -m-9 rounded-xl shadow-lg transition-all duration-300 ">
+    <div dir="RTL" className="min-h-screen py-8">
+      <div className="p-4">
+        <div className="bg-clip-padding bg-opacity-10 bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg transition-all duration-300 -m-9">
           {/* Post Title */}
-          <h1 className="text-2xl font-bold text-white mb-3 border-b pb-2">
+          <h1 className="text-2xl font-bold text-white mb-3 break-words">
             {post.title}
           </h1>
+          <hr className="border-gray-700 mb-3" />
           {/* Post Description */}
-          <p className="text-gray-300 text-base mb-4">{post.description}</p>
+          <p className="text-gray-300 text-base mb-4 break-words">
+            {post.description}
+          </p>
 
           {/* Post Details */}
           <div className="space-y-3 mb-4">
             <div className="flex items-center gap-2 text-sm">
-              <MapPin className="text-[#FFC107] w-5 h-5" />
-              <span className="text-gray-400">موقعیت:</span>
+              <MapPin className="text-cyan-400 w-5 h-5" />
+              <span className="text-gray-500">موقعیت:</span>
               <span className="text-white">{post.location}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <Tag className="text-[#FFC107] w-5 h-5" />
-              <span className="text-gray-400">قیمت:</span>
+              <Tag className="text-lime-400 w-5 h-5" />
+              <span className="text-gray-500">قیمت:</span>
               <span className="text-white">
                 {post.price.toLocaleString()} افغانی
               </span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <Folder className="text-[#FFC107] w-5 h-5" />
-              <span className="text-gray-400">دسته‌بندی:</span>
+              <Folder className="text-fuchsia-400 w-5 h-5" />
+              <span className="text-gray-500">دسته‌بندی:</span>
               <span className="text-white">{post.category}</span>
             </div>
             {post.subCategory && (
               <div className="flex items-center gap-2 text-sm">
-                <Layers className="text-[#FFC107] w-5 h-5" />
-                <span className="text-gray-400">زیر دسته:</span>
+                <Layers className="text-orange-400 w-5 h-5" />
+                <span className="text-gray-500">زیر دسته:</span>
                 <span className="text-white">{post.subCategory}</span>
               </div>
             )}
@@ -163,45 +164,29 @@ const Post: React.FC = () => {
             >
               {post.images.map((image, index) => (
                 <div
-                  className="mt-4 relative w-full h-48 rounded-md border border-gray-600 overflow-hidden transition-transform duration-200 hover:scale-105"
+                  key={index}
+                  className="group relative w-full h-48 rounded-xl overflow-hidden border border-gray-700 transition-transform duration-300 hover:scale-105 cursor-pointer"
                   onClick={() => handleImageClick(image)}
                 >
                   <img
                     loading="lazy"
                     src={`http://192.168.0.105:4000/${image}`}
                     alt="Post"
-                    className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-300 group-hover:opacity-80"
                   />
-                  <img
-                    loading="lazy"
-                    src={`http://192.168.0.105:4000/${image}`}
-                    alt="Post"
-                    className="absolute inset-0 m-auto max-w-full max-h-full object-contain"
-                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
                 </div>
-
-                // <div
-                //   key={index}
-                //   className="overflow-hidden rounded-md border border-gray-600"
-                // >
-                //   <img
-                //     loading="lazy"
-                //     src={`http://192.168.0.105:4000/${image}`}
-                //     alt={`تصویر ${index + 1} از پست ${post.title}`}
-                //     className="w-full h-52 object-cover ] cursor-pointer transition-transform duration-200 hover:scale-105"
-                //     onClick={() => handleImageClick(image)}
-                //   />
-                // </div>
               ))}
             </div>
           )}
         </div>
 
         {/* User's Other Posts */}
-        <div className="mt-10">
-          <h2 className="text-gray-300 text-xl font-semibold mb-4">
+        <div className="mt-12">
+          <h2 className="text-gray-400 text-2xl font-bold mb-2  shadow-sm">
             تمام اعلانات این کاربر
           </h2>
+          <hr className="mb-12" />
           {userPosts && userPosts.length > 0 ? (
             <TheUserPostsinPostPage userPosts={userPosts} />
           ) : (
@@ -215,7 +200,6 @@ const Post: React.FC = () => {
           onClose={() => setIsModalOpen(false)}
           imageUrl={selectedImage}
         />
-
         {/* User Credentials Section */}
         <div className="mt-8 text-center">
           {user ? (
@@ -232,7 +216,7 @@ const Post: React.FC = () => {
               ) : (
                 <button
                   onClick={() => getUserCredentials(post.seller)}
-                  className="hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm"
+                  className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
                 >
                   دیدن اطلاعات تماس
                 </button>
@@ -242,7 +226,7 @@ const Post: React.FC = () => {
             <div className="pt-4">
               <NavLink
                 to="/login"
-                className="hover:scale-105 transition-all duration-75 p-2 bg-red-500 rounded-md text-white text-sm "
+                className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
               >
                 دیدن اطلاعات تماس
               </NavLink>

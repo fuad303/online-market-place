@@ -36,7 +36,7 @@ const SmallScreenNav = () => {
               toggleSideBar ? "pointer-events-none" : ""
             } h-full w-full`}
           >
-            <nav className="bg-[#0e2338] p-4 m-3 rounded-xl flex justify-between gap-3 items-center relative z-10">
+            <nav className="bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 p-4 m-3 rounded-xl flex justify-between gap-3 items-center relative z-10 text-white">
               {/* Left Section */}
               <div className="flex items-center space-x-3">
                 {user ? (
@@ -49,16 +49,16 @@ const SmallScreenNav = () => {
                         <img
                           src={`http://192.168.0.105:4000/${user.profileImage}`}
                           loading="lazy"
-                          className="size-14 h cursor-pointer rounded-full object-cover border-4 border-[#324455]"
+                          className="size-14 h cursor-pointer rounded-full object-cover border-4 border-gray-500"
                           alt="Profile"
                         />
                       ) : (
-                        <User className="text-gray-500 w-12 h-12" />
+                        <User className="text-gray-400 w-12 h-12" />
                       )}
                     </NavLink>
                     <NavLink
                       to="new-notification"
-                      className="p-2 whitespace-nowrap bg-[#324455] rounded-md hover:bg-[#3c5165]"
+                      className="p-2 whitespace-nowrap bg-gray-700 rounded-md hover:bg-gray-600 transition duration-200"
                     >
                       ثبت اگهی
                     </NavLink>
@@ -70,14 +70,14 @@ const SmallScreenNav = () => {
                     </NavLink>
                     <NavLink
                       to="/login"
-                      className="flex items-center p-2 bg-[#324455] rounded-md hover:bg-[#3c5165] transition duration-200 mr-1"
+                      className="flex items-center p-2 bg-gray-700 rounded-md hover:bg-gray-600 transition duration-200 mr-1"
                     >
                       <LogIn className="w-6 h-6 text-white mr-2" />
                       <span className="text-white">ورود</span>
                     </NavLink>
                     <NavLink
                       to={user ? "new-notification" : "/login"}
-                      className="p-2 whitespace-nowrap bg-[#324455] rounded-md hover:bg-[#3c5165]"
+                      className="p-2 whitespace-nowrap bg-gray-700 rounded-md hover:bg-gray-600 transition duration-200"
                     >
                       ثبت اگهی
                     </NavLink>
@@ -90,7 +90,7 @@ const SmallScreenNav = () => {
                 {/* On small screens, show a button to open the search input */}
                 <button
                   onClick={() => setInputOpen(true)}
-                  className="p-2 bg-[#1b2b3c] rounded-md hover:bg-[#2c3f50] transition duration-200"
+                  className="p-2 bg-gray-800 rounded-md hover:bg-gray-700 transition duration-200"
                 >
                   <Search className="w-6 h-6 text-white" />
                 </button>
@@ -100,7 +100,7 @@ const SmallScreenNav = () => {
               <motion.button
                 onClick={() => setToggleSideBar(!toggleSideBar)}
                 whileTap={{ rotate: 180 }}
-                className="p-2 bg-[#1b2b3c] text-white rounded-md hover:bg-[#2c3f50] transition duration-200"
+                className="p-2 bg-gray-800 rounded-md hover:bg-gray-700 transition duration-200"
               >
                 <Menu className="w-6 h-6" />
               </motion.button>

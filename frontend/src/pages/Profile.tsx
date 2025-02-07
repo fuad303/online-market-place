@@ -104,11 +104,11 @@ const Profile = () => {
           {(error as any)?.data?.message || "مشکلی پیش آمد"}
         </h1>
       ) : (
-        <div className=" flex items-center justify-center">
+        <div className="flex items-center justify-center">
           {user ? (
             <div className="w-full max-w-full grid gap-6">
               {/* Profile Card */}
-              <div className="bg-[#1b344e] p-6 shadow-lg rounded-lg flex flex-col md:flex-row items-center md:items-start">
+              <div className="bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 p-6 shadow-lg rounded-lg flex flex-col md:flex-row items-center md:items-start text-white">
                 {/* Profile Image */}
                 <input
                   type="file"
@@ -125,12 +125,13 @@ const Profile = () => {
                     src={userImage}
                     onClick={() => fileRef.current?.click()}
                     loading="lazy"
-                    className="w-20 h-20 cursor-pointer rounded-full object-cover border-4 border-[#324455] mb-5 md:mb-0"
+                    className="w-20 h-20 cursor-pointer rounded-full object-cover border-4 border-gray-500 mb-5 md:mb-0"
+                    alt="Profile"
                   />
                 ) : (
                   <div
                     onClick={() => fileRef.current?.click()}
-                    className="cursor-pointer w-20 h-20 flex items-center justify-center rounded-full bg-gray-200 border-4 border-[#324455]"
+                    className="cursor-pointer w-20 h-20 flex items-center justify-center rounded-full bg-gray-700 border-4 border-gray-500"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +141,7 @@ const Profile = () => {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="text-gray-500 w-12 h-12"
+                      className="text-gray-400 w-12 h-12"
                     >
                       <circle cx="12" cy="7" r="4"></circle>
                       <path d="M5.5 20c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5H5.5z"></path>
@@ -151,15 +152,13 @@ const Profile = () => {
                 {/* User Info and Actions */}
                 <div className="flex flex-col md:flex-row justify-between items-center w-full md:ml-4">
                   <div className="text-center md:text-left">
-                    <h2 className="text-xl font-bold text-white">
-                      {user.username}
-                    </h2>
+                    <h2 className="text-xl font-bold">{user.username}</h2>
                     <p className="text-gray-400 text-sm">{user.email}</p>
                     <div className="mt-2">
                       <a
                         href="tel:+93790864688"
                         onClick={handleCopyClick}
-                        className="text-[#FFC107] hover:underline text-sm"
+                        className="text-yellow-500 hover:underline text-sm"
                       >
                         {user.phone}
                       </a>
@@ -171,7 +170,7 @@ const Profile = () => {
                       <span className="mx-1 text-gray-400">|</span>
                       <NavLink
                         to="/edit-profile"
-                        className="text-[#FFC107] hover:underline text-sm"
+                        className="text-yellow-500 hover:underline text-sm"
                       >
                         ویرایش پروفایل
                       </NavLink>

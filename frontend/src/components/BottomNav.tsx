@@ -17,7 +17,8 @@ const BottomNav = () => {
     setDropdownOpen(dropdownOpen === index ? null : index);
   };
 
-  const subItemStyles = "hover:bg-[#213447] p-2 rounded";
+  const subItemStyles =
+    "hover:bg-gray-700 text-white p-2 rounded-md transition-colors duration-200 block";
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -35,12 +36,12 @@ const BottomNav = () => {
     <div
       dir="RTL"
       ref={navRef}
-      className="mr-[50px] ml-[50px] mt-[-20px] p-8 bg-[#0c243e] rounded-xl flex justify-between relative"
+      className="mr-[50px] ml-[50px] mt-[-17px] p-8 bg-gray-800/10 border border-gray-700 rounded-xl flex justify-between relative text-white"
     >
       {/* Properties */}
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(1)}>
-          <HousePlus className="mr-1" />
+          <HousePlus className="mr-1 text-cyan-400" />
           املاک
           <motion.div
             initial={false}
@@ -57,30 +58,31 @@ const BottomNav = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 mt-2 w-40 bg-[#0e2338] rounded-lg shadow-lg z-10"
+            className="absolute left-0 mt-2 w-40 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-20"
+            style={{ zIndex: 100 }}
           >
             <ul className="p-2 grid">
               <NavLink
                 to={`/search?query=${encodeURIComponent("خانه")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 خانه
               </NavLink>
               <NavLink
                 to={`/search?query=${encodeURIComponent("دکان")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 دکان
               </NavLink>
               <NavLink
                 to={`/search?query=${encodeURIComponent("باغ")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 باغ
               </NavLink>
               <NavLink
                 to={`/search?query=${encodeURIComponent("زمین")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 زمین
               </NavLink>
@@ -92,7 +94,7 @@ const BottomNav = () => {
       {/* Vehicles */}
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(2)}>
-          <CarFront className="mr-1" />
+          <CarFront className="mr-1 text-lime-400" />
           وسایط نقلیه
           <motion.div
             initial={false}
@@ -109,30 +111,31 @@ const BottomNav = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 mt-2 w-40 bg-[#0e2338] rounded-lg shadow-lg z-10"
+            className="absolute left-0 mt-2 w-40 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-20"
+            style={{ zIndex: 100 }}
           >
             <ul className="p-2 grid">
               <NavLink
                 to={`/search?query=${encodeURIComponent("موتر")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 موتر
               </NavLink>
               <NavLink
                 to={`/search?query=${encodeURIComponent("موتور")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 موتور
               </NavLink>
               <NavLink
                 to={`/search?query=${encodeURIComponent("سه چرخ")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 سه چرخ
               </NavLink>
               <NavLink
                 to={`/search?query=${encodeURIComponent("بایسکل")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 بایسکل
               </NavLink>
@@ -144,7 +147,7 @@ const BottomNav = () => {
       {/* Gadgets */}
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(3)}>
-          <CircuitBoard className="mr-1" />
+          <CircuitBoard className="mr-1 text-fuchsia-400" />
           لوازم دیجیتال
           <motion.div
             initial={false}
@@ -161,24 +164,25 @@ const BottomNav = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 mt-2 w-40 bg-[#0e2338] rounded-lg shadow-lg z-10"
+            className="absolute left-0 mt-2 w-40 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-20"
+            style={{ zIndex: 100 }}
           >
             <ul className="p-2 grid">
               <NavLink
                 to={`/search?query=${encodeURIComponent("مبایل")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 مبایل
               </NavLink>
               <NavLink
                 to={`/search?query=${encodeURIComponent("تبلیت")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 تبلیت
               </NavLink>
               <NavLink
                 to={`/search?query=${encodeURIComponent("لب تاپ")}`}
-                className={`${subItemStyles}`}
+                className={subItemStyles}
               >
                 لب تاپ
               </NavLink>
@@ -190,7 +194,7 @@ const BottomNav = () => {
       {/* Services */}
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(4)}>
-          <BadgeInfo className="mr-1" />
+          <BadgeInfo className="mr-1 text-orange-400" />
           خدمات
           <motion.div
             initial={false}
@@ -207,13 +211,22 @@ const BottomNav = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 mt-2 w-40 bg-[#0e2338] rounded-lg shadow-lg z-10"
+            className="absolute left-0 mt-2 w-40 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-20"
+            style={{ zIndex: 100 }}
           >
             <ul className="p-2 grid">
-              <button className={subItemStyles}>خدمت۱</button>
-              <button className={subItemStyles}>خدمت۲</button>
-              <button className={subItemStyles}>خدمت۳</button>
-              <button className={subItemStyles}>خدمت۴</button>
+              <NavLink to="#" className={subItemStyles}>
+                خدمت۱
+              </NavLink>
+              <NavLink to="#" className={subItemStyles}>
+                خدمت۲
+              </NavLink>
+              <NavLink to="#" className={subItemStyles}>
+                خدمت۳
+              </NavLink>
+              <NavLink to="#" className={subItemStyles}>
+                خدمت۴
+              </NavLink>
             </ul>
           </motion.div>
         )}

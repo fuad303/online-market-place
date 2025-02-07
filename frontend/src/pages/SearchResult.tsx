@@ -41,7 +41,7 @@ const SearchResult = () => {
               to={`/post/${encodeURIComponent(result._id)}`}
               key={result._id}
             >
-              <div className="bg-[#1b344e] p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
+              <div className="bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
                 {result.images.length > 0 && (
                   <div className="mt-4 relative w-full h-72 rounded-md border border-gray-600 overflow-hidden transition-transform duration-200 hover:scale-105">
                     <img
@@ -67,27 +67,31 @@ const SearchResult = () => {
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm">
-                      <MapPin className="text-[#FFC107] w-5 h-5 shrink-0" />
+                      <MapPin className="text-cyan-400 w-5 h-5 shrink-0" />
+                      {/*  Icon Color */}
                       <span className="text-gray-400">موقعیت:</span>
                       <span className="text-white line-clamp-1">
                         {result.location}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
-                      <Tag className="text-[#FFC107] w-5 h-5 shrink-0" />
+                      <Tag className="text-lime-400 w-5 h-5 shrink-0" />
+                      {/*  Icon Color */}
                       <span className="text-gray-400">قیمت:</span>
                       <span className="text-white line-clamp-1">
                         {result.price.toLocaleString()} افغانی
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
-                      <Folder className="text-[#FFC107] w-5 h-5 shrink-0" />
+                      <Folder className="text-fuchsia-400 w-5 h-5 shrink-0" />
+                      {/*  Icon Color */}
                       <span className="text-gray-400">دسته‌بندی:</span>
                       <span className="text-white">{result.category}</span>
                     </div>
                     {result.subCategory && (
                       <div className="flex items-center gap-2 text-sm">
-                        <Layers className="text-[#FFC107] w-5 h-5 shrink-0" />
+                        <Layers className="text-orange-400 w-5 h-5 shrink-0" />
+                        {/*  Icon Color */}
                         <span className="text-gray-400">زیر دسته:</span>
                         <span className="text-white">{result.subCategory}</span>
                       </div>
@@ -99,7 +103,7 @@ const SearchResult = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center text-3xl p-3">چیزی یافت نشد</div>
+        <div className="text-center text-3xl p-3 text-white">چیزی یافت نشد</div>
       )}
     </div>
   );

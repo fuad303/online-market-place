@@ -34,7 +34,7 @@ const SideBar = ({
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? 0 : "100%" }}
         transition={{ duration: 0.3 }}
-        className="fixed top-0 right-0 w-72 h-full bg-[#1b2b3c] text-white shadow-lg z-50 overflow-y-auto"
+        className="fixed top-0 right-0 w-72 h-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 text-white shadow-lg z-50 overflow-y-auto"
       >
         {/* Header */}
         <div className="p-4 flex items-center justify-between border-b border-gray-700">
@@ -80,7 +80,7 @@ const SideBar = ({
           {Array.from({ length: 20 }, (_, index) => (
             <li key={index}>
               <div
-                className="flex justify-between items-center hover:bg-[#2c3f50] p-3 rounded cursor-pointer"
+                className="flex justify-between items-center hover:bg-gray-700 p-3 rounded cursor-pointer"
                 onClick={() => toggleSubMenu(index)}
               >
                 <span>مورد {index + 1}</span>
@@ -100,9 +100,9 @@ const SideBar = ({
                 transition={{ duration: 0.3 }}
                 className="pl-6 text-right space-y-2 overflow-hidden"
               >
-                <li className="hover:bg-[#324455] p-2 rounded">زیر مورد 1</li>
-                <li className="hover:bg-[#324455] p-2 rounded">زیر مورد 2</li>
-                <li className="hover:bg-[#324455] p-2 rounded">زیر مورد 3</li>
+                <li className="hover:bg-gray-600 p-2 rounded">زیر مورد 1</li>
+                <li className="hover:bg-gray-600 p-2 rounded">زیر مورد 2</li>
+                <li className="hover:bg-gray-600 p-2 rounded">زیر مورد 3</li>
               </motion.ul>
             </li>
           ))}

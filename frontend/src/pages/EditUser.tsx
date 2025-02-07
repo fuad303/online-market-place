@@ -48,10 +48,10 @@ const EditUser = () => {
     <div className="sm:pt-0 md:pt-3 flex items-center justify-center ">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-transparent border-[0.5px] border-gray-200 shadow-lg rounded-lg m-2 p-7 w-[25rem]"
+        className="bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 bg-gray-900 border border-gray-700 shadow-lg rounded-lg m-2 p-7 w-[25rem] text-white"
       >
         {error ? (
-          <h1 className="text-2xl font-bold text-red-600 mb-6 text-center">
+          <h1 className="text-2xl font-bold text-red-500 mb-6 text-center">
             {(error as any)?.data?.message || "مشکلی پیش آمد"}
           </h1>
         ) : (
@@ -59,7 +59,10 @@ const EditUser = () => {
         )}
 
         <div className="mb-4 text-right">
-          <label htmlFor="username" className="block  font-medium">
+          <label
+            htmlFor="username"
+            className="block  font-medium text-gray-300"
+          >
             نام کاربری جدید
           </label>
           <input
@@ -69,25 +72,28 @@ const EditUser = () => {
             defaultValue={user?.username}
             type="username"
             id="username"
-            className="w-full text-right border border-gray-200 bg-transparent  rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="w-full text-right border border-gray-600 bg-transparent  rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
         </div>
 
         <div className="mb-6">
-          <label htmlFor="password" className="block text-right  font-medium">
+          <label
+            htmlFor="password"
+            className="block text-right  font-medium text-gray-300"
+          >
             رمز عبور جدید
           </label>
           <input
             {...register("password")}
             type="password"
             id="password"
-            className="w-full bg-transparent text-right border border-gray-300 rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="w-full bg-transparent text-right border border-gray-600 rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
         </div>
         <button
           disabled={isLoading}
           type="submit"
-          className="w-full bg-[#26394c] text-white py-2 px-4 rounded-md hover:bg-[#2c4257] transition duration-200"
+          className="w-full bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition duration-200"
         >
           {isLoading ? "بارگیری" : "ویرایش"}
         </button>

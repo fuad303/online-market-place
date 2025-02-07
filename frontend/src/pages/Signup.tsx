@@ -45,11 +45,11 @@ const Signup = () => {
   return (
     <div className="sm:pt-0 md:pt-3 flex items-center justify-center">
       <form
-        className="bg-transparent border-[0.5px] border-gray-200 shadow-lg rounded-lg m-2 p-7 w-[25rem]"
+        className="bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 bg-gray-900 border border-gray-700 shadow-lg rounded-lg m-2 p-7 w-[25rem] text-white"
         onSubmit={handleSubmit(onSubmit)}
       >
         {error ? (
-          <h1 className="text-2xl font-bold text-red-600 mb-6 text-center">
+          <h1 className="text-2xl font-bold text-red-500 mb-6 text-center">
             {(error as any)?.data?.message || "مشکلی پیش آمد"}
           </h1>
         ) : (
@@ -58,7 +58,10 @@ const Signup = () => {
 
         {/* Username */}
         <div className="mb-4">
-          <label htmlFor="username" className="block text-right font-medium">
+          <label
+            htmlFor="username"
+            className="block text-right font-medium text-gray-300"
+          >
             نام کاربری
           </label>
           <input
@@ -66,13 +69,16 @@ const Signup = () => {
             type="text"
             id="username"
             defaultValue="fuad"
-            className="w-full border bg-transparent text-right border-gray-300 rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="w-full border border-gray-600 bg-transparent text-right rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
         </div>
 
         {/* Phone Number */}
         <div className="mb-4">
-          <label htmlFor="phone" className="block text-right font-medium">
+          <label
+            htmlFor="phone"
+            className="block text-right font-medium text-gray-300"
+          >
             شماره تماس
           </label>
           <div className="relative">
@@ -91,7 +97,7 @@ const Signup = () => {
               defaultValue="790864688"
               id="phone"
               placeholder="701234567"
-              className="w-full pl-12 border bg-transparent text-right border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="w-full pl-12 border border-gray-600 bg-transparent text-right rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
           </div>
           {errors.phone && (
@@ -101,7 +107,10 @@ const Signup = () => {
 
         {/* Email */}
         <div className="mb-4">
-          <label htmlFor="email" className="block text-right font-medium">
+          <label
+            htmlFor="email"
+            className="block text-right font-medium text-gray-300"
+          >
             ایمیل
           </label>
           <input
@@ -115,7 +124,7 @@ const Signup = () => {
             type="text"
             id="email"
             defaultValue="anwa@gmail.com"
-            className="w-full border bg-transparent text-right border-gray-300 rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="w-full border border-gray-600 bg-transparent text-right rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
           {errors.email && (
             <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -124,7 +133,10 @@ const Signup = () => {
 
         {/* Password */}
         <div className="mb-4">
-          <label htmlFor="password" className="block text-right font-medium">
+          <label
+            htmlFor="password"
+            className="block text-right font-medium text-gray-300"
+          >
             رمز عبور
           </label>
           <input
@@ -135,7 +147,7 @@ const Signup = () => {
             type="password"
             id="password"
             defaultValue="Fuad4688@@"
-            className="w-full border bg-transparent text-right border-gray-300 rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="w-full border border-gray-600 bg-transparent text-right rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
           {errors.password && (
             <p className="text-red-500 text-xs mt-1">
@@ -148,13 +160,13 @@ const Signup = () => {
         <button
           disabled={isLoading}
           type="submit"
-          className="w-full bg-[#26394c] text-white py-2 px-4 rounded-md hover:bg-[#2c4257] transition duration-200"
+          className="w-full bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition duration-200"
         >
           {isLoading ? "بارگیری..." : "ثبت نام"}
         </button>
 
         {/* Login Link */}
-        <p className="translate-y-3 text-right">
+        <p className="translate-y-3 text-right text-gray-300">
           حساب دارید؟
           <NavLink className="text-blue-400 text-right" to="/login">
             وارد شوید
