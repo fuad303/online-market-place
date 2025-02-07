@@ -1,5 +1,11 @@
 import { motion } from "framer-motion";
-import { ChevronDown, ShoppingCart } from "lucide-react";
+import {
+  BadgeInfo,
+  CarFront,
+  ChevronDown,
+  CircuitBoard,
+  HousePlus,
+} from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -34,7 +40,7 @@ const BottomNav = () => {
       {/* Properties */}
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(1)}>
-          <ShoppingCart className="mr-1" />
+          <HousePlus className="mr-1" />
           املاک
           <motion.div
             initial={false}
@@ -86,7 +92,7 @@ const BottomNav = () => {
       {/* Vehicles */}
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(2)}>
-          <ShoppingCart className="mr-1" />
+          <CarFront className="mr-1" />
           وسایط نقلیه
           <motion.div
             initial={false}
@@ -138,7 +144,7 @@ const BottomNav = () => {
       {/* Gadgets */}
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(3)}>
-          <ShoppingCart className="mr-1" />
+          <CircuitBoard className="mr-1" />
           لوازم دیجیتال
           <motion.div
             initial={false}
@@ -184,7 +190,7 @@ const BottomNav = () => {
       {/* Services */}
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(4)}>
-          <ShoppingCart className="mr-1" />
+          <BadgeInfo className="mr-1" />
           خدمات
           <motion.div
             initial={false}
