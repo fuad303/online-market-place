@@ -154,7 +154,7 @@ const NotificationForm = () => {
                 { value: "موبایل", label: "موبایل", icon: phone },
                 { value: "لب تاپ", label: "لب تاپ", icon: laptop },
                 { value: "موتر", label: "موتر", icon: car },
-                { value: "موترسایکل", label: "موترسایکل", icon: motor },
+                { value: "موتور", label: "موتور", icon: motor },
                 { value: "خانه", label: "خانه", icon: house },
                 { value: "دکان", label: "دکان", icon: shop },
                 { value: "دیگر", label: "دیگر", icon: null },

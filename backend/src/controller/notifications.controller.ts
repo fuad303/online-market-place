@@ -124,9 +124,15 @@ export const search = async (req: Request, res: Response) => {
       searchTerm = "موبایل";
       break;
 
-    case ["لب تاپ", "لپ تاپ", "کامپیوتر", "کمپیوتر", "لبتاپ", "لپتاپ"].includes(
-      searchTerm
-    ):
+    case [
+      "لب تاپ",
+      "لپ تاپ",
+      "کامپیوتر",
+      "کمپیوتر",
+      "لبتاپ",
+      "لپتاپ",
+      "لب تاب",
+    ].includes(searchTerm):
       searchTerm = "لب تاپ";
       break;
 
@@ -136,6 +142,17 @@ export const search = async (req: Request, res: Response) => {
 
     case ["خونه", "خانه"].includes(searchTerm):
       searchTerm = "خانه";
+      break;
+
+    case [
+      "سکیل",
+      "موترسایکل",
+      "موتور سکیل",
+      "موتورسکیل",
+      "موتور سیکلت",
+      "موتور",
+    ].includes(searchTerm):
+      searchTerm = "موتور";
       break;
   }
 
