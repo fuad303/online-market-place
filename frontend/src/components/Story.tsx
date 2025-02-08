@@ -36,7 +36,7 @@ const Story: React.FC = () => {
   };
 
   return (
-    <div dir="LTR" className="relative w-full  overflow-hidden">
+    <div dir="LTR" className="relative w-full ">
       {showPrev && (
         <button
           onClick={scrollPrev}

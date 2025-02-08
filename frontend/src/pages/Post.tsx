@@ -115,7 +115,7 @@ const Post: React.FC = () => {
   return (
     <div dir="RTL" className="min-h-screen py-8">
       <div className="p-4">
-        <div className="bg-clip-padding bg-opacity-10 bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg transition-all duration-300 -m-9">
+        <div className="bg-clip-padding -m-2 bg-opacity-10 bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg transition-all duration-300">
           {/* Post Title */}
           <h1 className="text-2xl font-bold text-white mb-3 break-words">
             {post.title}

@@ -43,7 +43,7 @@ const Auth = () => {
           </NavLink>
         </div>
 
-        <main className="bg-[#1b2b3c] text-white p-6 rounded-lg shadow-inner">
+        <main className="bg-[#1b2b3c]/80 text-white p-6 rounded-lg shadow-inner">
           <Outlet />
         </main>
       </div>

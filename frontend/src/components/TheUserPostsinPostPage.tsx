@@ -14,7 +14,7 @@ const TheUserPostsinPostPage: React.FC<UserPostsProps> = ({ userPosts }) => {
           behavior: "smooth",
         });
       }}
-      className="grid gap-6 -m-9"
+      className="grid gap-6"
       style={{
         gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
       }}

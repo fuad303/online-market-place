@@ -31,9 +31,9 @@ const SearchResult = () => {
       {searchResult && searchResult.length > 0 ? (
         <div
           dir="RTL"
-          className="grid gap-4 -m-5"
+          className="grid gap-4 m-3 mt-10"
           style={{
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(285px, 1fr))",
           }}
         >
           {searchResult.map((result) => (
@@ -43,7 +43,7 @@ const SearchResult = () => {
             >
               <div className="bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
                 {result.images.length > 0 && (
-                  <div className="mt-4 relative w-full h-72 rounded-md border border-gray-600 overflow-hidden transition-transform duration-200 hover:scale-105">
+                  <div className="mt-4 relative w-full h-72 rounded-md border border-gray-600 overflow-hidden transition-transform duration-200 hover:scale-[1.02]">
                     <img
                       loading="lazy"
                       src={`http://192.168.0.105:4000/${result.images[0]}`}

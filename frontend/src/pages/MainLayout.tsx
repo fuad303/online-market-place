@@ -5,7 +5,7 @@ import SmallScreenNav from "../components/SmallScreenNav";
 
 const MainLayout = () => {
   return (
-    <div className="min-h-screen text-white ">
+    <div className="min-h-screen ">
       <nav className="">
         <div className="sm:hidden md:block flex ">
           <TopNav />
@@ -16,7 +16,7 @@ const MainLayout = () => {
         </div>
       </nav>
 
-      <main className="p-8 flex flex-col justify-between sidebar">
+      <main>
         <Outlet />
       </main>
     </div>

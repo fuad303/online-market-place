@@ -94,18 +94,18 @@ const Home: React.FC = () => {
   return (
     <div dir="RTL" className="min-h-screen py-8">
       {/* Story Section */}
-      <div className="max-w-screen-xl mx-auto px-6 mb-8">
+      <div className="sm:-mt-4 sm:px-2">
         <Story />
       </div>
 
       {/* Notifications Carousel */}
-      <div className="max-w-screen-xl mx-auto px-6 mb-8">
+      <div className="px-2 mb-8">
         <Carousel />
       </div>
 
       {/* Posts Grid */}
       <div
-        className="grid gap-6 -m-6"
+        className="grid gap-6 m-2"
         style={{
           gridTemplateColumns: "repeat(auto-fit, minmax(285px, 1fr))",
         }}

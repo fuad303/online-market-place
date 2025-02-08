@@ -106,9 +106,9 @@ const Profile = () => {
       ) : (
         <div className="flex items-center justify-center">
           {user ? (
-            <div className="w-full max-w-full grid gap-6">
+            <div className="w-full max-w-full grid gap-6 m-3">
               {/* Profile Card */}
-              <div className="bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 p-6 shadow-lg rounded-lg flex flex-col md:flex-row items-center md:items-start text-white">
+              <div className="bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 bg-gray-800 border border-gray-700 p-6  shadow-lg rounded-lg flex flex-col md:flex-row items-center md:items-start text-white">
                 {/* Profile Image */}
                 <input
                   type="file"
