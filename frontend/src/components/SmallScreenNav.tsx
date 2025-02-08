@@ -1,6 +1,6 @@
 // SmallScreenNav.tsx
 import { motion } from "framer-motion";
-import { LogIn, Menu, Search, User } from "lucide-react";
+import { LogIn, Menu, Search, User2 } from "lucide-react";
 import { useState } from "react";
 import SideBar from "./SideBar";
 import { NavLink } from "react-router-dom";
@@ -53,7 +53,7 @@ const SmallScreenNav = () => {
                           alt="Profile"
                         />
                       ) : (
-                        <User className="text-gray-400 w-12 h-12" />
+                        <User2 className="text-gray-400 w-12 h-12" />
                       )}
                     </NavLink>
                     <NavLink

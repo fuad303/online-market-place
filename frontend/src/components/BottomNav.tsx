@@ -148,7 +148,7 @@ const BottomNav = () => {
       <div className="relative">
         <button className="flex items-center" onClick={() => toggleDropdown(3)}>
           <CircuitBoard className="mr-1 text-fuchsia-400" />
-          لوازم دیجیتال
+          لوازم دیجیتالی
           <motion.div
             initial={false}
             animate={{ rotate: dropdownOpen === 3 ? 180 : 0 }}
@@ -215,18 +215,10 @@ const BottomNav = () => {
             style={{ zIndex: 100 }}
           >
             <ul className="p-2 grid">
-              <NavLink to="#" className={subItemStyles}>
-                خدمت۱
-              </NavLink>
-              <NavLink to="#" className={subItemStyles}>
-                خدمت۲
-              </NavLink>
-              <NavLink to="#" className={subItemStyles}>
-                خدمت۳
-              </NavLink>
-              <NavLink to="#" className={subItemStyles}>
-                خدمت۴
-              </NavLink>
+              <button className={subItemStyles}>خدمت۱</button>
+              <button className={subItemStyles}>خدمت۲</button>
+              <button className={subItemStyles}>خدمت۳</button>
+              <button className={subItemStyles}>خدمت۴</button>
             </ul>
           </motion.div>
         )}

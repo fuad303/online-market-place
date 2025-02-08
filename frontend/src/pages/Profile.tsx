@@ -9,6 +9,7 @@ import { useUploadProfileImageMutation } from "../app/api/uploadApi";
 import { clearUser, updateProfileImage } from "../app/features/userSlice";
 import UserPosts from "../components/UserPosts";
 import notificationsApi from "../app/api/notificationsApi";
+import { User2 } from "lucide-react";
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -133,19 +134,7 @@ const Profile = () => {
                     onClick={() => fileRef.current?.click()}
                     className="cursor-pointer w-20 h-20 flex items-center justify-center rounded-full bg-gray-700 border-4 border-gray-500"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-gray-400 w-12 h-12"
-                    >
-                      <circle cx="12" cy="7" r="4"></circle>
-                      <path d="M5.5 20c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5H5.5z"></path>
-                    </svg>
+                    <User2 />
                   </div>
                 )}
 
